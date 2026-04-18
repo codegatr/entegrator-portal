@@ -66,7 +66,7 @@ function flash_render(): string
             'warning' => 'exclamation-triangle',
             default   => 'info-circle',
         };
-        $out .= '<div class="alert '.$cls.'"><i class="fas fa-'.$icon.'"></i> '.h($f['msg']).'</div>';
+        $out .= '<div class="alert '.$cls.'">'.h($f['msg']).'</div>';
     }
     return $out;
 }

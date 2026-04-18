@@ -79,6 +79,7 @@ function render_header(string $title = '', string $active = ''): void
         ['log',       'Aktivite',     'activity',   'viewer',   '/log/index.php',          'main'],
         ['ayarlar',   'Ayarlar',      'settings',   'admin',    '/yonetim/ayarlar.php',    'yonetim'],
         ['kullanici', 'Kullanıcılar', 'users',      'admin',    '/yonetim/kullanici.php',  'yonetim'],
+        ['musteri-kullanici', 'Müşteri Portal Kul.', 'shield', 'admin', '/yonetim/musteri-kullanici.php', 'yonetim'],
         ['guncelleme','Güncelleme',   'update',     'admin',    '/yonetim/guncelleme.php', 'yonetim'],
         ['sifre',     'Şifrem',       'key',        'viewer',   '/yonetim/sifre.php',      'yonetim'],
     ];
@@ -109,6 +110,7 @@ function render_header(string $title = '', string $active = ''): void
         'log'        => ['Aktivite Log', 'Sistem kayıtları'],
         'ayarlar'    => ['Sistem Ayarları', 'Yapılandırma'],
         'kullanici'  => ['Kullanıcılar', 'Portal kullanıcıları'],
+        'musteri-kullanici' => ['Müşteri Portal Kullanıcıları', 'Müşterilere özel portal erişimleri'],
         'guncelleme' => ['Güncelleme', 'Yazılım yönetimi'],
         'sifre'      => ['Şifre', 'Hesap güvenliği'],
     ];

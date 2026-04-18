@@ -47,8 +47,8 @@ render_header('Sistem Ayarları', 'yonetim');
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <!-- Firma Bilgileri -->
     <div class="card">
-        <div class="card-h"><?= icon('building', 14) ?> Firma Bilgileri (config.php)</div>
-        <div class="card-b" style="font-size:13px">
+        <div class="card-head"><?= icon('building') ?><h3>Firma Bilgileri (config.php)</h3></div>
+        <div class="card-body" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Ünvan</span><strong><?= h(FIRMA_ADI) ?></strong>
             </div>
@@ -76,8 +76,8 @@ render_header('Sistem Ayarları', 'yonetim');
 
     <!-- İstatistikler -->
     <div class="card">
-        <div class="card-h"><?= icon('chart', 14) ?> Sistem İstatistikleri</div>
-        <div class="card-b" style="font-size:13px">
+        <div class="card-head"><?= icon('chart') ?><h3>Sistem İstatistikleri</h3></div>
+        <div class="card-body" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Aktif Kullanıcı</span><strong><?= number_format($stat['kullanici']) ?></strong>
             </div>
@@ -105,8 +105,8 @@ render_header('Sistem Ayarları', 'yonetim');
 
     <!-- Sürüm Bilgileri -->
     <div class="card">
-        <div class="card-h"><?= icon('github', 14) ?> Sürüm Bilgileri</div>
-        <div class="card-b" style="font-size:13px">
+        <div class="card-head"><?= icon('github') ?><h3>Sürüm Bilgileri</h3></div>
+        <div class="card-body" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Portal</span>
                 <span><span class="badge badge-success"><?= icon('check', 14) ?> v<?= h(ayar_get($pdo, 'portal_surumu', '1.0.0')) ?></span></span>
@@ -132,8 +132,8 @@ render_header('Sistem Ayarları', 'yonetim');
 
     <!-- Disk + Depo -->
     <div class="card">
-        <div class="card-h"><?= icon('package', 14) ?> Disk ve Depolama</div>
-        <div class="card-b" style="font-size:13px">
+        <div class="card-head"><?= icon('package') ?><h3>Disk ve Depolama</h3></div>
+        <div class="card-body" style="font-size:13px">
             <?php if ($disk_total > 0):
                 $disk_used = $disk_total - $disk_free;
                 $disk_pct = round($disk_used / $disk_total * 100);

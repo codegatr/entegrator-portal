@@ -220,8 +220,8 @@ render_header('Yeni Fatura', 'yeni');
         <div>
             <!-- ═══ Müşteri ═══ -->
             <div class="card">
-                <div class="card-h"><?= icon('users', 14) ?> Müşteri (Alıcı)</div>
-                <div class="card-b">
+                <div class="card-head"><?= icon('users') ?><h3>Müşteri (Alıcı)</h3></div>
+                <div class="card-body">
                     <div class="fg" style="position:relative">
                         <label>Müşteri Ara / Seç *</label>
                         <input type="text" id="mukellef-search" placeholder="Ünvan, VKN veya TCKN ile ara..." autocomplete="off">
@@ -236,11 +236,11 @@ render_header('Yeni Fatura', 'yeni');
 
             <!-- ═══ Satırlar ═══ -->
             <div class="card">
-                <div class="card-h">
+                <div class="card-head">
                     <?= icon('list', 14) ?> Fatura Satırları
                     <button type="button" id="line-add" class="btn btn-primary btn-sm" style="margin-left:auto"><?= icon('plus', 14) ?> Satır Ekle</button>
                 </div>
-                <div class="card-b">
+                <div class="card-body">
                     <div class="line-editor">
                         <div style="display:grid;grid-template-columns:40px 1fr 100px 80px 110px 90px 100px 40px;gap:8px;font-size:11px;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px;padding:0 8px">
                             <div style="text-align:center">#</div>
@@ -279,8 +279,8 @@ render_header('Yeni Fatura', 'yeni');
 
             <!-- ═══ Notlar ═══ -->
             <div class="card">
-                <div class="card-h"><?= icon('info', 14) ?> Notlar (opsiyonel)</div>
-                <div class="card-b">
+                <div class="card-head"><?= icon('info') ?><h3>Notlar (opsiyonel)</h3></div>
+                <div class="card-body">
                     <div class="fg">
                         <textarea name="notlar" rows="2" maxlength="1000" placeholder="Faturada görünür not..."><?= h($form['notlar']) ?></textarea>
                     </div>
@@ -291,8 +291,8 @@ render_header('Yeni Fatura', 'yeni');
         <!-- ═══ Sağ sütun ═══ -->
         <div>
             <div class="card">
-                <div class="card-h"><?= icon('settings', 14) ?> Fatura Ayarları</div>
-                <div class="card-b">
+                <div class="card-head"><?= icon('settings') ?><h3>Fatura Ayarları</h3></div>
+                <div class="card-body">
                     <div class="fg">
                         <label>Düzenlenme Tarihi *</label>
                         <input type="date" name="duzenleme_tarihi" value="<?= h($form['duzenleme_tarihi']) ?>" required>
@@ -331,7 +331,7 @@ render_header('Yeni Fatura', 'yeni');
             </div>
 
             <div class="card" style="background:#fff7ed;border-color:#fde68a">
-                <div class="card-b" style="font-size:12.5px;color:#9a3412;line-height:1.6">
+                <div class="card-body" style="font-size:12.5px;color:#9a3412;line-height:1.6">
                     <strong><?= icon('info', 14) ?> Bilgi</strong><br>
                     Fatura oluşturulunca <strong>UBL-TR 2.1 uyumlu XML</strong> otomatik üretilir.
                     <br><br>

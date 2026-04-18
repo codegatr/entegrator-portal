@@ -94,8 +94,8 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
     <div>
         <!-- ═══ Temel Bilgiler ═══ -->
         <div class="card">
-            <div class="card-h"><?= icon('info', 14) ?> Fatura Bilgileri</div>
-            <div class="card-b">
+            <div class="card-head"><?= icon('info') ?><h3>Fatura Bilgileri</h3></div>
+            <div class="card-body">
                 <div class="form-row">
                     <div>
                         <div style="font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:.4px">Satıcı</div>
@@ -118,7 +118,7 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- ═══ Satırlar ═══ -->
         <div class="card">
-            <div class="card-h"><?= icon('list', 14) ?> Satırlar (<?= count($satirlar) ?>)</div>
+            <div class="card-head"><?= icon('list', 14) ?> Satırlar (<?= count($satirlar) ?>)</div>
             <div class="table-wrap" style="border:none;border-radius:0">
                 <table class="table">
                     <thead>
@@ -171,11 +171,11 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
         <!-- ═══ XML Görünümü ═══ -->
         <?php if ($xml_content): ?>
         <div class="card">
-            <div class="card-h">
+            <div class="card-head">
                 <?= icon('file-code', 14) ?> UBL-TR XML (<?= number_format($xml_size) ?> byte)
                 <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $id ?>" style="margin-left:auto;font-size:12px;font-weight:normal"><?= icon('download', 14) ?> İndir</a>
             </div>
-            <div class="card-b" style="padding:0">
+            <div class="card-body" style="padding:0">
                 <pre class="xml-viewer"><?= h($xml_content) ?></pre>
             </div>
         </div>
@@ -186,8 +186,8 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
     <div>
         <!-- Durum Timeline -->
         <div class="card">
-            <div class="card-h"><?= icon('clock', 14) ?> Durum Geçmişi</div>
-            <div class="card-b">
+            <div class="card-head"><?= icon('clock') ?><h3>Durum Geçmişi</h3></div>
+            <div class="card-body">
                 <div class="timeline">
                     <?php if (empty($loglar)): ?>
                         <div style="color:#94a3b8;font-size:13px">Henüz kayıt yok</div>
@@ -214,8 +214,8 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- Sonraki adımlar -->
         <div class="card" style="background:#fff7ed;border-color:#fde68a">
-            <div class="card-h" style="background:#fed7aa;color:#7c2d12"><?= icon('list', 14) ?> Sonraki Adımlar</div>
-            <div class="card-b" style="font-size:13px">
+            <div class="card-head" style="background:#fed7aa;color:#7c2d12"><?= icon('list', 14) ?> Sonraki Adımlar</div>
+            <div class="card-body" style="font-size:13px">
                 <?php if ($f['durum'] === 'hazir'): ?>
                     <div style="margin-bottom:10px">1. <strong>İmzala</strong> <span class="badge badge-secondary"><?= icon('clock', 14) ?> v0.2'de</span></div>
                     <div style="margin-bottom:10px">2. <strong>GİB'e gönder</strong> <span class="badge badge-secondary"><?= icon('clock', 14) ?> v0.3'te</span></div>
@@ -228,8 +228,8 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- Kaynak bilgi -->
         <div class="card">
-            <div class="card-h"><?= icon('info', 14) ?> Detay</div>
-            <div class="card-b" style="font-size:12.5px">
+            <div class="card-head"><?= icon('info') ?><h3>Detay</h3></div>
+            <div class="card-body" style="font-size:12.5px">
                 <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9">
                     <span style="color:#64748b">Oluşturan</span>
                     <strong><?= h($f['olusturan_ad'] ?: $f['olusturan'] ?: '—') ?></strong>

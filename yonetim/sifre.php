@@ -66,8 +66,8 @@ render_header('Şifre Değiştir', 'yonetim');
 
 <div style="max-width:520px">
     <div class="card">
-        <div class="card-h"><?= icon('key', 14) ?> Yeni Şifre</div>
-        <div class="card-b">
+        <div class="card-head"><?= icon('key') ?><h3>Yeni Şifre</h3></div>
+        <div class="card-body">
             <form method="POST" autocomplete="off">
                 <?= csrf_field() ?>
                 <?php if (!$force): ?>

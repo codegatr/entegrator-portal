@@ -103,8 +103,8 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
     <?= csrf_field() ?>
 
     <div class="card">
-        <div class="card-h"><?= icon('info', 14) ?> Vergi Bilgileri</div>
-        <div class="card-b">
+        <div class="card-head"><?= icon('info') ?><h3>Vergi Bilgileri</h3></div>
+        <div class="card-body">
             <div class="form-row">
                 <div class="fg">
                     <label>VKN (10) / TCKN (11) *</label>
@@ -141,8 +141,8 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
     </div>
 
     <div class="card">
-        <div class="card-h"><?= icon('info', 14) ?> Adres</div>
-        <div class="card-b">
+        <div class="card-head"><?= icon('info') ?><h3>Adres</h3></div>
+        <div class="card-body">
             <div class="fg">
                 <label>Açık Adres</label>
                 <textarea name="adres" rows="2" maxlength="500"><?= h($m['adres']) ?></textarea>
@@ -170,8 +170,8 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
     </div>
 
     <div class="card">
-        <div class="card-h"><?= icon('info', 14) ?> İletişim</div>
-        <div class="card-b">
+        <div class="card-head"><?= icon('info') ?><h3>İletişim</h3></div>
+        <div class="card-body">
             <div class="form-row">
                 <div class="fg">
                     <label>Telefon</label>

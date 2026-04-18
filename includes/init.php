@@ -140,6 +140,46 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS ayarlar (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+// ═══ MÜŞTERİ PORTALI TABLOLARI (v1.2.0+) ═════════════════
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS musteri_portal_kullanicilar (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    mukellef_id INT UNSIGNED NOT NULL,
+    kullanici_adi VARCHAR(100) UNIQUE NOT NULL,
+    sifre_hash VARCHAR(255) NOT NULL,
+    ad_soyad VARCHAR(100) DEFAULT NULL,
+    email VARCHAR(150) DEFAULT NULL,
+    telefon VARCHAR(30) DEFAULT NULL,
+    aktif TINYINT(1) DEFAULT 1,
+    sifre_degistirildi TINYINT(1) DEFAULT 0,
+    son_giris DATETIME DEFAULT NULL,
+    son_ip VARCHAR(45) DEFAULT NULL,
+    yanlis_giris_sayisi INT UNSIGNED DEFAULT 0,
+    kilit_bitis DATETIME DEFAULT NULL,
+    davet_token VARCHAR(64) DEFAULT NULL,
+    davet_bitis DATETIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY idx_mukellef (mukellef_id),
+    KEY idx_aktif (aktif)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS musteri_portal_log (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    musteri_kullanici_id INT UNSIGNED DEFAULT NULL,
+    mukellef_id INT UNSIGNED DEFAULT NULL,
+    olay VARCHAR(100) NOT NULL,
+    detay TEXT DEFAULT NULL,
+    hedef VARCHAR(100) DEFAULT NULL,
+    ip VARCHAR(45) DEFAULT NULL,
+    user_agent VARCHAR(500) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_kullanici (musteri_kullanici_id),
+    KEY idx_mukellef (mukellef_id),
+    KEY idx_olay (olay),
+    KEY idx_tarih (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
 // ═══ SEED: İLK ADMIN ═══════════════════════════════════════
 
 try {
