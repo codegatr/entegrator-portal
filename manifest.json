@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,15 +13,15 @@
     ".htaccess"
   ],
   "changelog": [
-    "v1.4.0 - Destek Talep (Ticket) sistemi: musteri acar, admin yanitlar, mesajlasma",
-    "v1.4.0 - Gelismis Arama: fatura + urun/hizmet satir bazli arama",
-    "v1.4.0 - Talep kategorileri: Fatura/Teknik/Bilgi/Iptal/Diger + 4 oncelik",
-    "v1.4.0 - 4 talep durumu: Acik/Cevaplandi/Beklemede/Kapali",
-    "v1.4.0 - Musteri dashboardda yeni yanit bildirimi",
-    "v1.4.0 - Admin destek sayfasinda musteri bilgi + son faturalari + diger talepleri",
-    "v1.4.0 - Arama: ETTN, fatura no, urun adi, urun kodu, kdv orani, tarih araligi",
-    "v1.4.0 - Arama sonucunda terim highlight (mark)",
-    "v1.4.0 - 2 yeni tablo: destek_talepleri, destek_mesajlari",
-    "v1.3.0 - Duyuru sistemi + zengin dashboard + SSS"
+    "v1.5.0 - 500 hatasi fix: destek.php defensive table check",
+    "v1.5.0 - Ucretler sayfasi (musteri portal): 4 paket + 13 belge turu + 15 ek hizmet + kiyaslama",
+    "v1.5.0 - Entegrator Yol Haritasi (admin): 6 faz, 50 gorev, interactive checkbox",
+    "v1.5.0 - Progress bar + faz bazinda ilerleme + faydali linkler",
+    "v1.5.0 - GIB ozel entegrator resmi kaynaklari listesi",
+    "v1.5.0 - Maliyet ve sure analizi: 5M TL sermaye + 500K tek seferlik + 80-200K aylik",
+    "v1.5.0 - Musteri menusune Ucretler eklendi (6 -> 7 menu)",
+    "v1.5.0 - Admin menusune Entegrator Yol Haritasi eklendi",
+    "v1.4.0 - Destek Talep sistemi + Gelismis arama",
+    "v1.3.0 - Duyurular + zengin dashboard"
   ]
 }

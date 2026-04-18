@@ -63,6 +63,7 @@ function mp_render_header(string $title = '', string $active = ''): void
         ['faturalar', 'Faturalarım',  'invoice',  '/musteri-portal/faturalar.php'],
         ['arama',     'Arama',        'search',   '/musteri-portal/arama.php'],
         ['destek',    'Destek',       'message',  '/musteri-portal/destek.php'],
+        ['ucretler',  'Ücretler',     'star',     '/musteri-portal/ucretler.php'],
         ['yardim',    'Yardım',       'help',     '/musteri-portal/yardim.php'],
         ['profil',    'Profilim',     'user',     '/musteri-portal/profil.php'],
     ];
@@ -92,12 +93,26 @@ function mp_render_header(string $title = '', string $active = ''): void
             </div>
 
             <nav class="mp-nav">
-                <?php foreach ($menu as [$slug, $label, $ic, $url]):
+                <?php
+                // Müşteri destek okunmamış sayısı (sadece destek menüsünde gösterilecek)
+                $mp_destek_yeni = 0;
+                try {
+                    $_mqq = $GLOBALS['pdo']->prepare("SELECT COUNT(*) FROM destek_talepleri WHERE mukellef_id=? AND musteri_okundu=0");
+                    $_mqq->execute([$user['mukellef_id']]);
+                    $mp_destek_yeni = (int)$_mqq->fetchColumn();
+                } catch (\Exception $e) {}
+
+                foreach ($menu as [$slug, $label, $ic, $url]):
                     $is_active = $slug === $active;
+                    $show_badge = ($slug === 'destek' && $mp_destek_yeni > 0);
                 ?>
-                    <a href="<?= SITE_URL . $url ?>" class="<?= $is_active ? 'active' : '' ?>">
+                    <a href="<?= SITE_URL . $url ?>" class="<?= $is_active ? 'active' : '' ?>" style="position:relative">
                         <?= mp_icon($ic, 16) ?>
                         <span><?= $label ?></span>
+                        <?php if ($show_badge): ?>
+                            <span style="background:#dc2626;color:#fff;padding:1px 6px;border-radius:10px;font-size:10px;font-weight:700;margin-left:4px"><?= $mp_destek_yeni ?></span>
+                        <?php endif; ?>
+                    </a>
                     </a>
                 <?php endforeach; ?>
             </nav>

@@ -87,6 +87,7 @@ function render_header(string $title = '', string $active = ''): void
         ['kullanici', 'Kullanıcılar', 'users',      'admin',    '/yonetim/kullanici.php',  'yonetim'],
         ['musteri-kullanici', 'Müşteri Portal Kul.', 'shield', 'admin', '/yonetim/musteri-kullanici.php', 'yonetim'],
         ['duyurular', 'Duyurular',    'megaphone',  'admin',    '/yonetim/duyurular.php',  'yonetim'],
+        ['entegrator-yol-haritasi', 'Entegratör Yol Haritası', 'chart', 'admin', '/yonetim/entegrator-yol-haritasi.php', 'yonetim'],
         ['guncelleme','Güncelleme',   'update',     'admin',    '/yonetim/guncelleme.php', 'yonetim'],
         ['sifre',     'Şifrem',       'key',        'viewer',   '/yonetim/sifre.php',      'yonetim'],
     ];
@@ -120,6 +121,7 @@ function render_header(string $title = '', string $active = ''): void
         'musteri-kullanici' => ['Müşteri Portal Kullanıcıları', 'Müşterilere özel portal erişimleri'],
         'duyurular'  => ['Duyurular', 'Müşterilere ve admin panele duyuru yayınla'],
         'destek-admin' => ['Destek Talepleri', 'Müşteri destek ve yanıt yönetimi'],
+        'entegrator-yol-haritasi' => ['Entegratör Yol Haritası', 'GİB Özel Entegratör lisans süreci takibi'],
         'guncelleme' => ['Güncelleme', 'Yazılım yönetimi'],
         'sifre'      => ['Şifre', 'Hesap güvenliği'],
     ];
@@ -149,16 +151,29 @@ function render_header(string $title = '', string $active = ''): void
             </div>
         </div>
 
+        <?php
+        // Destek bekleyen sayısı (sidebar badge)
+        $destek_bekleyen = 0;
+        try {
+            $dbq = $pdo->query("SELECT COUNT(*) FROM destek_talepleri WHERE admin_okundu=0");
+            $destek_bekleyen = (int)$dbq->fetchColumn();
+        } catch (\Exception $e) {}
+        ?>
+
         <div class="sb-section">Ana Menü</div>
         <nav class="sb-nav">
             <?php foreach ($menu as [$slug, $label, $ic, $role_req, $url, $grp]):
                 if (($hierarchy[$role_req] ?? 99) > $user_level) continue;
                 if ($grp !== 'main') continue;
                 $is_active = $slug === $active;
+                $badge = ($slug === 'destek-admin' && $destek_bekleyen > 0) ? $destek_bekleyen : 0;
             ?>
                 <a href="<?= SITE_URL . $url ?>" class="<?= $is_active ? 'active' : '' ?>">
                     <?= icon($ic) ?>
                     <span><?= $label ?></span>
+                    <?php if ($badge): ?>
+                        <span style="background:#dc2626;color:#fff;padding:1px 7px;border-radius:10px;font-size:10.5px;font-weight:700;margin-left:auto"><?= $badge ?></span>
+                    <?php endif; ?>
                 </a>
             <?php endforeach; ?>
 

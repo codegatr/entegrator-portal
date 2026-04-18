@@ -8,6 +8,50 @@ require INCLUDES_PATH . '/layout.php';
 auth_require_role('operator');
 $admin = auth_user();
 
+// ═══ DEFENSIVE: Tablo varlık kontrolü ═══
+try {
+    $tbl_check = $pdo->query("SHOW TABLES LIKE 'destek_talepleri'")->fetchColumn();
+    if (!$tbl_check) {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS destek_talepleri (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            talep_no VARCHAR(20) UNIQUE NOT NULL,
+            mukellef_id INT UNSIGNED NOT NULL,
+            musteri_kullanici_id INT UNSIGNED DEFAULT NULL,
+            konu VARCHAR(200) NOT NULL,
+            kategori ENUM('fatura_sorunu','teknik_destek','bilgi_talebi','iptal_iade','diger') DEFAULT 'diger',
+            oncelik ENUM('dusuk','normal','yuksek','acil') DEFAULT 'normal',
+            durum ENUM('acik','cevaplandi','beklemede','kapali') DEFAULT 'acik',
+            ilgili_fatura_id INT UNSIGNED DEFAULT NULL,
+            atanan_admin_id INT UNSIGNED DEFAULT NULL,
+            son_mesaj_tarihi DATETIME DEFAULT CURRENT_TIMESTAMP,
+            son_mesaj_tarafi ENUM('musteri','admin') DEFAULT 'musteri',
+            musteri_okundu TINYINT(1) DEFAULT 1,
+            admin_okundu TINYINT(1) DEFAULT 0,
+            kapali_tarihi DATETIME DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            KEY idx_mukellef (mukellef_id),
+            KEY idx_durum (durum),
+            KEY idx_son_mesaj (son_mesaj_tarihi)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        $pdo->exec("CREATE TABLE IF NOT EXISTS destek_mesajlari (
+            id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+            talep_id INT UNSIGNED NOT NULL,
+            taraf ENUM('musteri','admin') NOT NULL,
+            kullanici_id INT UNSIGNED DEFAULT NULL,
+            kullanici_adi VARCHAR(100) DEFAULT NULL,
+            mesaj TEXT NOT NULL,
+            sistem_mesaji TINYINT(1) DEFAULT 0,
+            ip VARCHAR(45) DEFAULT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            KEY idx_talep (talep_id),
+            KEY idx_tarih (created_at)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+    }
+} catch (\Exception $e) {
+    error_log('destek tablo: ' . $e->getMessage());
+}
+
 $id = (int)($_GET['id'] ?? 0);
 if (!$id) { header('Location: ' . SITE_URL . '/yonetim/destek.php'); exit; }
 
@@ -72,6 +116,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'reply
 
                 $pdo->commit();
                 audit_log($pdo, 'destek.reply', "talep_id=$id durum=$yeni_durum", null, "destek:$id");
+
+                // Müşteri e-postasına bildirim
+                if (!empty($talep['olusturan_email']) && filter_var($talep['olusturan_email'], FILTER_VALIDATE_EMAIL)) {
+                    @mail_destek_bildirim($talep['olusturan_email'], $talep['talep_no'], $talep['konu'],
+                        $yeni_durum === 'kapali' ? 'kapandi' : 'admin_yanit', $mesaj, $id);
+                }
+
                 redirect(SITE_URL . '/yonetim/destek-detay.php?id=' . $id);
             } catch (\Exception $e) {
                 $pdo->rollBack();
