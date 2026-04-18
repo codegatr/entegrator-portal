@@ -45,6 +45,8 @@ if (!function_exists('mp_icon')) {
             'bolt'        => '<path d="M7 2v11h3v9l7-12h-4l4-8z"/>',
             'package'     => '<path d="M12 2L3 7v10l9 5 9-5V7l-9-5zm0 2.21l6.09 3.39L12 10.99l-6.09-3.39L12 4.21zM5 9.28l6 3.34v6.95l-6-3.34V9.28zm8 10.29v-6.95l6-3.34v6.95l-6 3.34z"/>',
             'refresh'     => '<path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>',
+            'message'     => '<path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>',
+            'plus'        => '<path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>',
         ];
         if (!isset($icons[$name])) return '';
         return '<svg xmlns="http://www.w3.org/2000/svg" width="'.$size.'" height="'.$size.'" viewBox="0 0 24 24" fill="currentColor">'.$icons[$name].'</svg>';
@@ -59,6 +61,8 @@ function mp_render_header(string $title = '', string $active = ''): void
     $menu = [
         ['dashboard', 'Ana Sayfa',    'home',     '/musteri-portal/index.php'],
         ['faturalar', 'Faturalarım',  'invoice',  '/musteri-portal/faturalar.php'],
+        ['arama',     'Arama',        'search',   '/musteri-portal/arama.php'],
+        ['destek',    'Destek',       'message',  '/musteri-portal/destek.php'],
         ['yardim',    'Yardım',       'help',     '/musteri-portal/yardim.php'],
         ['profil',    'Profilim',     'user',     '/musteri-portal/profil.php'],
     ];

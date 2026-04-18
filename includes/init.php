@@ -216,6 +216,44 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS duyurular (
     KEY idx_bitis (bitis_tarihi)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+// ═══ DESTEK TALEPLERİ (v1.4.0+) — Ticket sistemi
+$pdo->exec("CREATE TABLE IF NOT EXISTS destek_talepleri (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    talep_no VARCHAR(20) UNIQUE NOT NULL,
+    mukellef_id INT UNSIGNED NOT NULL,
+    musteri_kullanici_id INT UNSIGNED DEFAULT NULL,
+    konu VARCHAR(200) NOT NULL,
+    kategori ENUM('fatura_sorunu','teknik_destek','bilgi_talebi','iptal_iade','diger') DEFAULT 'diger',
+    oncelik ENUM('dusuk','normal','yuksek','acil') DEFAULT 'normal',
+    durum ENUM('acik','cevaplandi','beklemede','kapali') DEFAULT 'acik',
+    ilgili_fatura_id INT UNSIGNED DEFAULT NULL,
+    atanan_admin_id INT UNSIGNED DEFAULT NULL,
+    son_mesaj_tarihi DATETIME DEFAULT CURRENT_TIMESTAMP,
+    son_mesaj_tarafi ENUM('musteri','admin') DEFAULT 'musteri',
+    musteri_okundu TINYINT(1) DEFAULT 1,
+    admin_okundu TINYINT(1) DEFAULT 0,
+    kapali_tarihi DATETIME DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY idx_mukellef (mukellef_id),
+    KEY idx_durum (durum),
+    KEY idx_son_mesaj (son_mesaj_tarihi)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
+$pdo->exec("CREATE TABLE IF NOT EXISTS destek_mesajlari (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    talep_id INT UNSIGNED NOT NULL,
+    taraf ENUM('musteri','admin') NOT NULL,
+    kullanici_id INT UNSIGNED DEFAULT NULL,
+    kullanici_adi VARCHAR(100) DEFAULT NULL,
+    mesaj TEXT NOT NULL,
+    sistem_mesaji TINYINT(1) DEFAULT 0,
+    ip VARCHAR(45) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    KEY idx_talep (talep_id),
+    KEY idx_tarih (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
 // ═══ SEED: İLK ADMIN ═══════════════════════════════════════
 
 try {

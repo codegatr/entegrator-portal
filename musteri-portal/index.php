@@ -112,6 +112,19 @@ $duyuru_q = $pdo->query("
 ");
 $duyurular = $duyuru_q ? $duyuru_q->fetchAll() : [];
 
+// Destek istatistikleri (müşterinin kendi talepleri)
+try {
+    $dk = $pdo->prepare("SELECT COUNT(*) FROM destek_talepleri WHERE mukellef_id=? AND durum NOT IN ('kapali')");
+    $dk->execute([$mid]);
+    $acik_talep = (int)$dk->fetchColumn();
+
+    $dn = $pdo->prepare("SELECT COUNT(*) FROM destek_talepleri WHERE mukellef_id=? AND musteri_okundu=0");
+    $dn->execute([$mid]);
+    $yeni_yanit = (int)$dn->fetchColumn();
+} catch (\Exception $e) {
+    $acik_talep = 0; $yeni_yanit = 0;
+}
+
 // Selamlama
 $saat = (int)date('H');
 $selam = $saat < 5 ? 'İyi geceler' : ($saat < 12 ? 'Günaydın' : ($saat < 18 ? 'İyi günler' : 'İyi akşamlar'));
@@ -151,6 +164,21 @@ mp_render_header('Ana Sayfa', 'dashboard');
         </div>
     </div>
 <?php endforeach; ?>
+
+<!-- ═══ DESTEK YANIT BİLDİRİMİ ═══ -->
+<?php if ($yeni_yanit > 0): ?>
+    <a href="<?= SITE_URL ?>/musteri-portal/destek.php" style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#0b5cff 0%,#0847c5 100%);color:#fff;padding:16px 20px;border-radius:10px;margin-bottom:14px;text-decoration:none;box-shadow:0 6px 20px rgba(11,92,255,0.25);position:relative;overflow:hidden">
+        <div style="position:absolute;top:-40px;right:-40px;width:140px;height:140px;background:rgba(255,255,255,0.1);border-radius:50%"></div>
+        <div style="width:44px;height:44px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
+            <?= mp_icon('message', 22) ?>
+        </div>
+        <div style="flex:1;position:relative">
+            <div style="font-weight:700;font-size:14.5px;margin-bottom:2px">CODEGA size yanıt verdi</div>
+            <div style="font-size:12.5px;opacity:0.9"><?= $yeni_yanit ?> destek talebinize yeni mesaj geldi · görüntülemek için tıklayın</div>
+        </div>
+        <div style="font-size:22px;position:relative">→</div>
+    </a>
+<?php endif; ?>
 
 <!-- ═══ HOŞGELDİN BANNER ═══ -->
 <div class="mp-welcome" style="margin-bottom:20px">
