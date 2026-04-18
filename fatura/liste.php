@@ -46,7 +46,7 @@ render_header('Faturalar', 'fatura');
         <div class="sub"><?= number_format((int)$total) ?> kayıt · Toplam: <?= fmt_tl((float)$tot_tutar) ?></div>
     </div>
     <div class="page-actions">
-        <a href="<?= SITE_URL ?>/fatura/yeni.php" class="btn btn-primary"><i class="fas fa-plus"></i> Yeni Fatura</a>
+        <a href="<?= SITE_URL ?>/fatura/yeni.php" class="btn btn-primary"><?= icon('plus', 14) ?> Yeni Fatura</a>
     </div>
 </div>
 
@@ -67,9 +67,9 @@ render_header('Faturalar', 'fatura');
     <span style="color:#94a3b8">→</span>
     <input type="date" name="t2" value="<?= h($tarih2) ?>">
 
-    <button type="submit" class="btn btn-ghost btn-sm"><i class="fas fa-filter"></i> Filtrele</button>
+    <button type="submit" class="btn btn-ghost btn-sm"><?= icon('filter', 14) ?> Filtrele</button>
     <?php if ($q || $durum || $tarih1 || $tarih2): ?>
-        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-outline btn-sm"><i class="fas fa-times"></i> Temizle</a>
+        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-outline btn-sm"><?= icon('x-circle', 14) ?> Temizle</a>
     <?php endif; ?>
 </form>
 
@@ -91,11 +91,11 @@ render_header('Faturalar', 'fatura');
         <tbody>
             <?php if (empty($rows)): ?>
                 <tr><td colspan="9"><div class="table-empty">
-                    <i class="fas fa-file-invoice"></i>
+                    <?= icon('invoice', 14) ?>
                     <strong>Fatura bulunamadı</strong>
                     <div style="margin-top:8px;font-size:12.5px"><?= $q||$durum||$tarih1||$tarih2 ? 'Filtreleri temizleyip deneyin' : 'Henüz hiç fatura yok' ?></div>
                     <?php if (!$q && !$durum): ?>
-                        <div style="margin-top:10px"><a href="<?= SITE_URL ?>/fatura/yeni.php" class="btn btn-primary btn-sm"><i class="fas fa-plus"></i> İlk fatura</a></div>
+                        <div style="margin-top:10px"><a href="<?= SITE_URL ?>/fatura/yeni.php" class="btn btn-primary btn-sm"><?= icon('plus', 14) ?> İlk fatura</a></div>
                     <?php endif; ?>
                 </div></td></tr>
             <?php else: foreach ($rows as $f): ?>
@@ -112,9 +112,9 @@ render_header('Faturalar', 'fatura');
                     <td><?= fatura_durum_html($f['durum']) ?></td>
                     <td style="font-size:11px;color:#64748b"><?= h($f['profil']) ?><br><?= h($f['tipi']) ?></td>
                     <td style="text-align:right;white-space:nowrap">
-                        <a href="<?= SITE_URL ?>/fatura/detay.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm" title="Detay"><i class="fas fa-eye"></i></a>
+                        <a href="<?= SITE_URL ?>/fatura/detay.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm" title="Detay"><?= icon('eye', 14) ?></a>
                         <?php if ($f['xml_path']): ?>
-                            <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm" title="XML indir"><i class="fas fa-download"></i></a>
+                            <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $f['id'] ?>" class="btn btn-ghost btn-sm" title="XML indir"><?= icon('download', 14) ?></a>
                         <?php endif; ?>
                     </td>
                 </tr>

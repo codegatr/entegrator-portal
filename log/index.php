@@ -68,10 +68,10 @@ render_header('Aktivite Log', 'log');
 <!-- Tab'lar -->
 <div style="display:flex;gap:4px;margin-bottom:16px;border-bottom:2px solid #e5e7eb">
     <a href="?tab=sistem" class="btn btn-ghost btn-sm" style="border-radius:7px 7px 0 0;<?= $tab==='sistem'?'background:#f6821f;color:#fff':'' ?>">
-        <i class="fas fa-server"></i> Sistem Log
+        <?= icon('package', 14) ?> Sistem Log
     </a>
     <a href="?tab=fatura" class="btn btn-ghost btn-sm" style="border-radius:7px 7px 0 0;<?= $tab==='fatura'?'background:#f6821f;color:#fff':'' ?>">
-        <i class="fas fa-file-invoice"></i> Fatura Durum Log
+        <?= icon('invoice', 14) ?> Fatura Durum Log
     </a>
 </div>
 
@@ -79,8 +79,8 @@ render_header('Aktivite Log', 'log');
     <input type="hidden" name="tab" value="<?= h($tab) ?>">
     <label>Ara:</label>
     <input type="text" name="q" value="<?= h($q) ?>" placeholder="Olay, detay, kullanıcı..." style="min-width:280px">
-    <button type="submit" class="btn btn-ghost btn-sm"><i class="fas fa-search"></i> Ara</button>
-    <?php if ($q): ?><a href="?tab=<?= h($tab) ?>" class="btn btn-outline btn-sm"><i class="fas fa-times"></i></a><?php endif; ?>
+    <button type="submit" class="btn btn-ghost btn-sm"><?= icon('search', 14) ?> Ara</button>
+    <?php if ($q): ?><a href="?tab=<?= h($tab) ?>" class="btn btn-outline btn-sm"><?= icon('x-circle', 14) ?></a><?php endif; ?>
     <div style="margin-left:auto;color:#64748b;font-size:12px">Sayfa <?= $page ?> / <?= $toplam_sayfa ?></div>
 </form>
 
@@ -99,7 +99,7 @@ render_header('Aktivite Log', 'log');
         </thead>
         <tbody>
             <?php if (empty($rows)): ?>
-                <tr><td colspan="6"><div class="table-empty"><i class="fas fa-list"></i>Kayıt yok</div></td></tr>
+                <tr><td colspan="6"><div class="table-empty"><?= icon('list', 14) ?>Kayıt yok</div></td></tr>
             <?php else: foreach ($rows as $r): ?>
                 <tr>
                     <td style="white-space:nowrap;color:#64748b;font-size:12px"><?= fmt_datetime($r['created_at']) ?></td>
@@ -113,7 +113,7 @@ render_header('Aktivite Log', 'log');
                     <td>
                         <?php if ($r['onceki_durum']): ?>
                             <?= fatura_durum_html($r['onceki_durum']) ?>
-                            <i class="fas fa-arrow-right" style="color:#94a3b8;margin:0 3px"></i>
+                            <?= icon('arrow-right', 14) ?>
                         <?php endif; ?>
                         <?= fatura_durum_html($r['yeni_durum']) ?>
                     </td>
@@ -136,7 +136,7 @@ render_header('Aktivite Log', 'log');
         </thead>
         <tbody>
             <?php if (empty($rows)): ?>
-                <tr><td colspan="6"><div class="table-empty"><i class="fas fa-server"></i>Kayıt yok</div></td></tr>
+                <tr><td colspan="6"><div class="table-empty"><?= icon('package', 14) ?>Kayıt yok</div></td></tr>
             <?php else: foreach ($rows as $r):
                 $cls = 'badge-secondary';
                 if (str_contains($r['olay'], '.fail') || str_contains($r['olay'], '.error')) $cls = 'badge-danger';
@@ -162,13 +162,13 @@ render_header('Aktivite Log', 'log');
 <?php if ($toplam_sayfa > 1): ?>
 <div style="margin-top:14px;display:flex;justify-content:center;gap:6px">
     <?php if ($page > 1): ?>
-        <a href="?tab=<?= h($tab) ?>&q=<?= urlencode($q) ?>&p=<?= $page-1 ?>" class="btn btn-ghost btn-sm"><i class="fas fa-chevron-left"></i></a>
+        <a href="?tab=<?= h($tab) ?>&q=<?= urlencode($q) ?>&p=<?= $page-1 ?>" class="btn btn-ghost btn-sm"><?= icon('arrow-left', 14) ?></a>
     <?php endif; ?>
     <span style="padding:7px 14px;background:#fff;border:1px solid #e5e7eb;border-radius:6px;font-size:13px">
         Sayfa <?= $page ?> / <?= $toplam_sayfa ?>
     </span>
     <?php if ($page < $toplam_sayfa): ?>
-        <a href="?tab=<?= h($tab) ?>&q=<?= urlencode($q) ?>&p=<?= $page+1 ?>" class="btn btn-ghost btn-sm"><i class="fas fa-chevron-right"></i></a>
+        <a href="?tab=<?= h($tab) ?>&q=<?= urlencode($q) ?>&p=<?= $page+1 ?>" class="btn btn-ghost btn-sm"><?= icon('chevron-right', 14) ?></a>
     <?php endif; ?>
 </div>
 <?php endif; ?>

@@ -40,14 +40,14 @@ render_header('Sistem Ayarları', 'yonetim');
         <div class="sub">Portal yapılandırması ve sistem sağlığı</div>
     </div>
     <div class="page-actions">
-        <a href="<?= SITE_URL ?>/yonetim/kullanici.php" class="btn btn-ghost"><i class="fas fa-users"></i> Kullanıcılar</a>
+        <a href="<?= SITE_URL ?>/yonetim/kullanici.php" class="btn btn-ghost"><?= icon('users', 14) ?> Kullanıcılar</a>
     </div>
 </div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
     <!-- Firma Bilgileri -->
     <div class="card">
-        <div class="card-h"><i class="fas fa-building"></i> Firma Bilgileri (config.php)</div>
+        <div class="card-h"><?= icon('building', 14) ?> Firma Bilgileri (config.php)</div>
         <div class="card-b" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Ünvan</span><strong><?= h(FIRMA_ADI) ?></strong>
@@ -68,7 +68,7 @@ render_header('Sistem Ayarları', 'yonetim');
                 <span style="color:#64748b">Fatura Seri Kodu</span><strong style="font-family:monospace"><?= h(FATURA_SERI_KODU) ?></strong>
             </div>
             <div class="alert alert-info" style="margin-top:14px;font-size:12.5px">
-                <i class="fas fa-info-circle"></i>
+                <?= icon('info', 14) ?>
                 Bu bilgiler <code>config.php</code> dosyasında tanımlıdır. Multi-tenant'a geçişte tabloya taşınacak.
             </div>
         </div>
@@ -76,7 +76,7 @@ render_header('Sistem Ayarları', 'yonetim');
 
     <!-- İstatistikler -->
     <div class="card">
-        <div class="card-h"><i class="fas fa-chart-bar"></i> Sistem İstatistikleri</div>
+        <div class="card-h"><?= icon('chart', 14) ?> Sistem İstatistikleri</div>
         <div class="card-b" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Aktif Kullanıcı</span><strong><?= number_format($stat['kullanici']) ?></strong>
@@ -105,15 +105,15 @@ render_header('Sistem Ayarları', 'yonetim');
 
     <!-- Sürüm Bilgileri -->
     <div class="card">
-        <div class="card-h"><i class="fas fa-code-branch"></i> Sürüm Bilgileri</div>
+        <div class="card-h"><?= icon('github', 14) ?> Sürüm Bilgileri</div>
         <div class="card-b" style="font-size:13px">
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">Portal</span>
-                <span><span class="badge badge-success"><i class="fas fa-check"></i> v<?= h(ayar_get($pdo, 'portal_surumu', '1.0.0')) ?></span></span>
+                <span><span class="badge badge-success"><?= icon('check', 14) ?> v<?= h(ayar_get($pdo, 'portal_surumu', '1.0.0')) ?></span></span>
             </div>
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">entegrator-gib Kütüphane</span>
-                <span><span class="badge badge-info"><i class="fas fa-code"></i> v<?= h(ayar_get($pdo, 'kutuphane_surumu', '0.1.0-alpha')) ?></span></span>
+                <span><span class="badge badge-info"><?= icon('file-code', 14) ?> v<?= h(ayar_get($pdo, 'kutuphane_surumu', '0.1.0-alpha')) ?></span></span>
             </div>
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">PHP</span>
@@ -121,18 +121,18 @@ render_header('Sistem Ayarları', 'yonetim');
             </div>
             <div style="padding:6px 0;border-bottom:1px solid #f1f5f9;display:flex;justify-content:space-between">
                 <span style="color:#64748b">XAdES İmza Motoru</span>
-                <span><span class="badge badge-warning"><i class="fas fa-hourglass-half"></i> v0.2'de gelecek</span></span>
+                <span><span class="badge badge-warning"><?= icon('clock', 14) ?> v0.2'de gelecek</span></span>
             </div>
             <div style="padding:6px 0;display:flex;justify-content:space-between">
                 <span style="color:#64748b">GİB Entegrasyon</span>
-                <span><span class="badge badge-warning"><i class="fas fa-hourglass-half"></i> v0.3'te gelecek</span></span>
+                <span><span class="badge badge-warning"><?= icon('clock', 14) ?> v0.3'te gelecek</span></span>
             </div>
         </div>
     </div>
 
     <!-- Disk + Depo -->
     <div class="card">
-        <div class="card-h"><i class="fas fa-hard-drive"></i> Disk ve Depolama</div>
+        <div class="card-h"><?= icon('package', 14) ?> Disk ve Depolama</div>
         <div class="card-b" style="font-size:13px">
             <?php if ($disk_total > 0):
                 $disk_used = $disk_total - $disk_free;

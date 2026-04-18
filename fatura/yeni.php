@@ -205,12 +205,12 @@ render_header('Yeni Fatura', 'yeni');
         <div class="sub">Form tamamlanınca UBL-TR 2.1 XML otomatik üretilir</div>
     </div>
     <div class="page-actions">
-        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Listeye Dön</a>
+        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-ghost"><?= icon('arrow-left', 14) ?> Listeye Dön</a>
     </div>
 </div>
 
 <?php if (!empty($errors['_'])): ?>
-    <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?= h($errors['_']) ?></div>
+    <div class="alert alert-danger"><?= icon('alert', 14) ?> <?= h($errors['_']) ?></div>
 <?php endif; ?>
 
 <form method="POST" id="invoice-form">
@@ -220,7 +220,7 @@ render_header('Yeni Fatura', 'yeni');
         <div>
             <!-- ═══ Müşteri ═══ -->
             <div class="card">
-                <div class="card-h"><i class="fas fa-user"></i> Müşteri (Alıcı)</div>
+                <div class="card-h"><?= icon('users', 14) ?> Müşteri (Alıcı)</div>
                 <div class="card-b">
                     <div class="fg" style="position:relative">
                         <label>Müşteri Ara / Seç *</label>
@@ -237,8 +237,8 @@ render_header('Yeni Fatura', 'yeni');
             <!-- ═══ Satırlar ═══ -->
             <div class="card">
                 <div class="card-h">
-                    <i class="fas fa-list-ol"></i> Fatura Satırları
-                    <button type="button" id="line-add" class="btn btn-primary btn-sm" style="margin-left:auto"><i class="fas fa-plus"></i> Satır Ekle</button>
+                    <?= icon('list', 14) ?> Fatura Satırları
+                    <button type="button" id="line-add" class="btn btn-primary btn-sm" style="margin-left:auto"><?= icon('plus', 14) ?> Satır Ekle</button>
                 </div>
                 <div class="card-b">
                     <div class="line-editor">
@@ -279,7 +279,7 @@ render_header('Yeni Fatura', 'yeni');
 
             <!-- ═══ Notlar ═══ -->
             <div class="card">
-                <div class="card-h"><i class="fas fa-sticky-note"></i> Notlar (opsiyonel)</div>
+                <div class="card-h"><?= icon('info', 14) ?> Notlar (opsiyonel)</div>
                 <div class="card-b">
                     <div class="fg">
                         <textarea name="notlar" rows="2" maxlength="1000" placeholder="Faturada görünür not..."><?= h($form['notlar']) ?></textarea>
@@ -291,7 +291,7 @@ render_header('Yeni Fatura', 'yeni');
         <!-- ═══ Sağ sütun ═══ -->
         <div>
             <div class="card">
-                <div class="card-h"><i class="fas fa-cog"></i> Fatura Ayarları</div>
+                <div class="card-h"><?= icon('settings', 14) ?> Fatura Ayarları</div>
                 <div class="card-b">
                     <div class="fg">
                         <label>Düzenlenme Tarihi *</label>
@@ -332,7 +332,7 @@ render_header('Yeni Fatura', 'yeni');
 
             <div class="card" style="background:#fff7ed;border-color:#fde68a">
                 <div class="card-b" style="font-size:12.5px;color:#9a3412;line-height:1.6">
-                    <strong><i class="fas fa-info-circle"></i> Bilgi</strong><br>
+                    <strong><?= icon('info', 14) ?> Bilgi</strong><br>
                     Fatura oluşturulunca <strong>UBL-TR 2.1 uyumlu XML</strong> otomatik üretilir.
                     <br><br>
                     Henüz <strong>mali mühürle imzalama</strong> ve <strong>GİB'e gönderim</strong> aktif değil (v0.2 ve v0.3 sprintlerinde eklenecek).
@@ -342,7 +342,7 @@ render_header('Yeni Fatura', 'yeni');
             </div>
 
             <button type="submit" class="btn btn-primary btn-lg" style="width:100%">
-                <i class="fas fa-save"></i> Fatura Oluştur
+                <?= icon('check', 14) ?> Fatura Oluştur
             </button>
         </div>
     </div>

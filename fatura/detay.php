@@ -77,16 +77,16 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
     </div>
     <div class="page-actions">
         <?php if ($f['xml_path']): ?>
-            <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $id ?>" class="btn btn-ghost"><i class="fas fa-download"></i> XML İndir</a>
+            <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $id ?>" class="btn btn-ghost"><?= icon('download', 14) ?> XML İndir</a>
         <?php endif; ?>
         <?php if (!in_array($f['durum'], ['iptal','gonderildi','kabul'], true) && auth_user()['rol'] !== 'viewer'): ?>
             <form method="POST" style="display:inline" data-confirm="Fatura iptal edilsin mi? Bu işlem geri alınamaz." class="js-iptal">
                 <?= csrf_field() ?>
                 <input type="hidden" name="action" value="iptal">
-                <button type="submit" class="btn btn-danger" data-confirm="Fatura iptal edilsin mi? Bu işlem geri alınamaz."><i class="fas fa-ban"></i> İptal Et</button>
+                <button type="submit" class="btn btn-danger" data-confirm="Fatura iptal edilsin mi? Bu işlem geri alınamaz."><?= icon('ban', 14) ?> İptal Et</button>
             </form>
         <?php endif; ?>
-        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Liste</a>
+        <a href="<?= SITE_URL ?>/fatura/liste.php" class="btn btn-ghost"><?= icon('arrow-left', 14) ?> Liste</a>
     </div>
 </div>
 
@@ -94,7 +94,7 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
     <div>
         <!-- ═══ Temel Bilgiler ═══ -->
         <div class="card">
-            <div class="card-h"><i class="fas fa-info-circle"></i> Fatura Bilgileri</div>
+            <div class="card-h"><?= icon('info', 14) ?> Fatura Bilgileri</div>
             <div class="card-b">
                 <div class="form-row">
                     <div>
@@ -118,7 +118,7 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- ═══ Satırlar ═══ -->
         <div class="card">
-            <div class="card-h"><i class="fas fa-list-ol"></i> Satırlar (<?= count($satirlar) ?>)</div>
+            <div class="card-h"><?= icon('list', 14) ?> Satırlar (<?= count($satirlar) ?>)</div>
             <div class="table-wrap" style="border:none;border-radius:0">
                 <table class="table">
                     <thead>
@@ -172,8 +172,8 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
         <?php if ($xml_content): ?>
         <div class="card">
             <div class="card-h">
-                <i class="fas fa-file-code"></i> UBL-TR XML (<?= number_format($xml_size) ?> byte)
-                <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $id ?>" style="margin-left:auto;font-size:12px;font-weight:normal"><i class="fas fa-download"></i> İndir</a>
+                <?= icon('file-code', 14) ?> UBL-TR XML (<?= number_format($xml_size) ?> byte)
+                <a href="<?= SITE_URL ?>/fatura/indir.php?id=<?= $id ?>" style="margin-left:auto;font-size:12px;font-weight:normal"><?= icon('download', 14) ?> İndir</a>
             </div>
             <div class="card-b" style="padding:0">
                 <pre class="xml-viewer"><?= h($xml_content) ?></pre>
@@ -186,7 +186,7 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
     <div>
         <!-- Durum Timeline -->
         <div class="card">
-            <div class="card-h"><i class="fas fa-clock-rotate-left"></i> Durum Geçmişi</div>
+            <div class="card-h"><?= icon('clock', 14) ?> Durum Geçmişi</div>
             <div class="card-b">
                 <div class="timeline">
                     <?php if (empty($loglar)): ?>
@@ -214,12 +214,12 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- Sonraki adımlar -->
         <div class="card" style="background:#fff7ed;border-color:#fde68a">
-            <div class="card-h" style="background:#fed7aa;color:#7c2d12"><i class="fas fa-list-check"></i> Sonraki Adımlar</div>
+            <div class="card-h" style="background:#fed7aa;color:#7c2d12"><?= icon('list', 14) ?> Sonraki Adımlar</div>
             <div class="card-b" style="font-size:13px">
                 <?php if ($f['durum'] === 'hazir'): ?>
-                    <div style="margin-bottom:10px">1. <strong>İmzala</strong> <span class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> v0.2'de</span></div>
-                    <div style="margin-bottom:10px">2. <strong>GİB'e gönder</strong> <span class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> v0.3'te</span></div>
-                    <div>3. <strong>Durum takibi</strong> <span class="badge badge-secondary"><i class="fas fa-hourglass-half"></i> v0.3'te</span></div>
+                    <div style="margin-bottom:10px">1. <strong>İmzala</strong> <span class="badge badge-secondary"><?= icon('clock', 14) ?> v0.2'de</span></div>
+                    <div style="margin-bottom:10px">2. <strong>GİB'e gönder</strong> <span class="badge badge-secondary"><?= icon('clock', 14) ?> v0.3'te</span></div>
+                    <div>3. <strong>Durum takibi</strong> <span class="badge badge-secondary"><?= icon('clock', 14) ?> v0.3'te</span></div>
                 <?php else: ?>
                     <?= fatura_durum_html($f['durum']) ?> durumundaki fatura için aksiyon beklenmiyor.
                 <?php endif; ?>
@@ -228,7 +228,7 @@ render_header("Fatura {$f['fatura_no']}", 'fatura');
 
         <!-- Kaynak bilgi -->
         <div class="card">
-            <div class="card-h"><i class="fas fa-circle-info"></i> Detay</div>
+            <div class="card-h"><?= icon('info', 14) ?> Detay</div>
             <div class="card-b" style="font-size:12.5px">
                 <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f1f5f9">
                     <span style="color:#64748b">Oluşturan</span>

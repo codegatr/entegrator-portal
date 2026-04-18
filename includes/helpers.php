@@ -147,14 +147,16 @@ function audit_log(PDO $pdo, string $event, ?string $detail = null, ?int $user_i
 function fatura_durum_html(string $durum): string
 {
     $map = [
-        'taslak'   => ['Taslak',    'secondary', 'file'],
+        'taslak'   => ['Taslak',    'secondary', 'clock'],
         'hazir'    => ['Hazır',     'info',      'check'],
         'imzali'   => ['İmzalı',    'primary',   'signature'],
         'gonderildi'=> ['Gönderildi','warning',  'paper-plane'],
         'kabul'    => ['Kabul',     'success',   'check-circle'],
-        'red'      => ['Red',       'danger',    'times-circle'],
+        'red'      => ['Red',       'danger',    'x-circle'],
         'iptal'    => ['İptal',     'dark',      'ban'],
     ];
-    [$text, $cls, $icon] = $map[$durum] ?? [$durum, 'secondary', 'question'];
-    return '<span class="badge badge-'.$cls.'"><i class="fas fa-'.$icon.'"></i> '.h($text).'</span>';
+    [$text, $cls, $icon] = $map[$durum] ?? [$durum, 'secondary', 'info'];
+    // icon() fonksiyonu layout.php'de tanımlı
+    $svg = function_exists('icon') ? icon($icon, 11) : '';
+    return '<span class="badge badge-'.$cls.'">'.$svg.' '.h($text).'</span>';
 }

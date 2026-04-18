@@ -91,19 +91,19 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
         <?php if(!$is_new): ?><div class="sub"><?= h($m['vkn_tip']) ?>: <?= h($m['vkn_tckn']) ?></div><?php endif; ?>
     </div>
     <div class="page-actions">
-        <a href="<?= SITE_URL ?>/musteri/" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Geri</a>
+        <a href="<?= SITE_URL ?>/musteri/" class="btn btn-ghost"><?= icon('arrow-left', 14) ?> Geri</a>
     </div>
 </div>
 
 <?php if (!empty($errors['_'])): ?>
-    <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?= h($errors['_']) ?></div>
+    <div class="alert alert-danger"><?= icon('alert', 14) ?> <?= h($errors['_']) ?></div>
 <?php endif; ?>
 
 <form method="POST">
     <?= csrf_field() ?>
 
     <div class="card">
-        <div class="card-h"><i class="fas fa-id-card"></i> Vergi Bilgileri</div>
+        <div class="card-h"><?= icon('info', 14) ?> Vergi Bilgileri</div>
         <div class="card-b">
             <div class="form-row">
                 <div class="fg">
@@ -141,7 +141,7 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
     </div>
 
     <div class="card">
-        <div class="card-h"><i class="fas fa-map-marker-alt"></i> Adres</div>
+        <div class="card-h"><?= icon('info', 14) ?> Adres</div>
         <div class="card-b">
             <div class="fg">
                 <label>Açık Adres</label>
@@ -170,7 +170,7 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
     </div>
 
     <div class="card">
-        <div class="card-h"><i class="fas fa-address-card"></i> İletişim</div>
+        <div class="card-h"><?= icon('info', 14) ?> İletişim</div>
         <div class="card-b">
             <div class="form-row">
                 <div class="fg">
@@ -200,7 +200,7 @@ render_header($is_new ? 'Yeni Müşteri' : 'Müşteri: '.$m['unvan'], 'musteri')
 
     <div style="display:flex;justify-content:flex-end;gap:8px">
         <a href="<?= SITE_URL ?>/musteri/" class="btn btn-ghost">Vazgeç</a>
-        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Kaydet</button>
+        <button type="submit" class="btn btn-primary"><?= icon('check', 14) ?> Kaydet</button>
     </div>
 </form>
 

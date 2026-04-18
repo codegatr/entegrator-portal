@@ -1,0 +1,22 @@
+{
+  "name": "CODEGA Entegratör Portal",
+  "version": "1.1.0",
+  "release_date": "2026-04-18",
+  "author": "CODEGA",
+  "website": "https://codega.com.tr",
+  "repo": "codegatr/entegrator-portal",
+  "min_php": "8.1.0",
+  "exclude_from_update": [
+    "config.php",
+    "install.lock",
+    "storage/",
+    ".htaccess"
+  ],
+  "changelog": [
+    "v1.1.0 - Yeni profesyonel tasarim (Veriban/EDM/Izibiz esinli)",
+    "v1.1.0 - Inline SVG iconlar (Font Awesome CDN bagimliligi kaldirildi)",
+    "v1.1.0 - Modern dashboard: KPI kartlari, gercek zamanli widgetlar",
+    "v1.1.0 - Guncelleme sistemi: GitHub Releases entegrasyonu",
+    "v1.1.0 - Tum sayfalar yeniden tasarlandi"
+  ]
+}

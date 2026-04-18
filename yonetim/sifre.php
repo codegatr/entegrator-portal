@@ -55,18 +55,18 @@ render_header('Şifre Değiştir', 'yonetim');
 
 <?php if ($force): ?>
     <div class="alert alert-warning">
-        <i class="fas fa-lock"></i>
+        <?= icon('lock', 14) ?>
         <strong>İlk giriş:</strong> Şifreni değiştirene kadar diğer sayfalara erişemezsin.
     </div>
 <?php endif; ?>
 
 <?php if ($err): ?>
-    <div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?= h($err) ?></div>
+    <div class="alert alert-danger"><?= icon('alert', 14) ?> <?= h($err) ?></div>
 <?php endif; ?>
 
 <div style="max-width:520px">
     <div class="card">
-        <div class="card-h"><i class="fas fa-key"></i> Yeni Şifre</div>
+        <div class="card-h"><?= icon('key', 14) ?> Yeni Şifre</div>
         <div class="card-b">
             <form method="POST" autocomplete="off">
                 <?= csrf_field() ?>
@@ -89,7 +89,7 @@ render_header('Şifre Değiştir', 'yonetim');
                     <?php if (!$force): ?>
                         <a href="<?= SITE_URL ?>/index.php" class="btn btn-ghost">Vazgeç</a>
                     <?php endif; ?>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Şifreyi Değiştir</button>
+                    <button type="submit" class="btn btn-primary"><?= icon('check', 14) ?> Şifreyi Değiştir</button>
                 </div>
             </form>
         </div>

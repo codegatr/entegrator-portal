@@ -82,15 +82,15 @@ render_header('Kullanıcı Yönetimi', 'yonetim');
         <div class="sub"><?= count($kullanicilar) ?> kullanıcı</div>
     </div>
     <div class="page-actions">
-        <a href="<?= SITE_URL ?>/yonetim/ayarlar.php" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Ayarlar</a>
+        <a href="<?= SITE_URL ?>/yonetim/ayarlar.php" class="btn btn-ghost"><?= icon('arrow-left', 14) ?> Ayarlar</a>
     </div>
 </div>
 
-<?php if ($err): ?><div class="alert alert-danger"><i class="fas fa-exclamation-circle"></i> <?= h($err) ?></div><?php endif; ?>
+<?php if ($err): ?><div class="alert alert-danger"><?= icon('alert', 14) ?> <?= h($err) ?></div><?php endif; ?>
 
 <!-- Yeni Kullanıcı Formu -->
 <div class="card">
-    <div class="card-h"><i class="fas fa-user-plus"></i> Yeni Kullanıcı Ekle</div>
+    <div class="card-h"><?= icon('users', 14) ?> Yeni Kullanıcı Ekle</div>
     <div class="card-b">
         <form method="POST">
             <?= csrf_field() ?>
@@ -125,7 +125,7 @@ render_header('Kullanıcı Yönetimi', 'yonetim');
                     <div class="hint">En az 8 karakter. Kullanıcı ilk girişte değiştirecek.</div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i class="fas fa-plus"></i> Kullanıcı Ekle</button>
+            <button type="submit" class="btn btn-primary"><?= icon('plus', 14) ?> Kullanıcı Ekle</button>
         </form>
     </div>
 </div>
@@ -194,7 +194,7 @@ render_header('Kullanıcı Yönetimi', 'yonetim');
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="reset_pwd">
                                 <input type="hidden" name="id" value="<?= $k['id'] ?>">
-                                <button type="submit" class="btn btn-ghost btn-sm" data-confirm="Şifre sıfırlansın mı? Yeni şifre ekrana çıkacak." title="Şifre sıfırla"><i class="fas fa-key"></i></button>
+                                <button type="submit" class="btn btn-ghost btn-sm" data-confirm="Şifre sıfırlansın mı? Yeni şifre ekrana çıkacak." title="Şifre sıfırla"><?= icon('key', 14) ?></button>
                             </form>
                             <form method="POST" style="display:inline" data-confirm="Durum değiştirilsin mi?">
                                 <?= csrf_field() ?>
@@ -205,7 +205,7 @@ render_header('Kullanıcı Yönetimi', 'yonetim');
                                 </button>
                             </form>
                         <?php else: ?>
-                            <a href="<?= SITE_URL ?>/yonetim/sifre.php" class="btn btn-ghost btn-sm"><i class="fas fa-key"></i> Şifrem</a>
+                            <a href="<?= SITE_URL ?>/yonetim/sifre.php" class="btn btn-ghost btn-sm"><?= icon('key', 14) ?> Şifrem</a>
                         <?php endif; ?>
                     </td>
                 </tr>
