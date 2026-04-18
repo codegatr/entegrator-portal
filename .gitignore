@@ -1,0 +1,31 @@
+# config — asla commit edilmez
+config.php
+config.local.php
+.env
+
+# storage — kullanıcı verileri
+storage/xml/*
+storage/pdf/*
+storage/certs/*
+storage/backups/*
+!storage/xml/.gitkeep
+!storage/pdf/.gitkeep
+!storage/certs/.gitkeep
+!storage/backups/.gitkeep
+storage/*.log
+
+# PHP
+vendor/
+composer.lock
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
