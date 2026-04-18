@@ -50,7 +50,7 @@ function render_header(string $title = '', string $active = ''): void
                 <div class="sb-d"><i class="fas fa-file-invoice-dollar"></i></div>
                 <div>
                     <div class="sb-title"><?= h(SITE_SHORT) ?></div>
-                    <div class="sb-sub">e-Fatura Portal</div>
+                    <div class="sb-sub">Entegratör Portal</div>
                 </div>
             </div>
         </div>
