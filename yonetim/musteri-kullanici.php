@@ -45,7 +45,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $ad ?: null, $email ?: null, $telefon ?: null,
                     ]);
                     audit_log($pdo, 'mp_user.create', "user=$kullanici mukellef_id=$mukellef_id", null, "mp_user");
-                    flash_set('success', "Müşteri portal kullanıcısı oluşturuldu: <strong>$kullanici</strong> — şifre: <code style='background:#fff;padding:2px 6px'>$sifre</code>. Müşteriye iletin, ilk girişte değiştirecek.");
+
+                    // Firma adını al (büyük kutuda göstermek için)
+                    $firma_q = $pdo->prepare("SELECT unvan FROM mukellefler WHERE id=?");
+                    $firma_q->execute([$mukellef_id]);
+                    $firma_adi = $firma_q->fetchColumn();
+
+                    // Flash yerine özel session key (HTML escape sorununu önlemek için)
+                    $_SESSION['yeni_mp_user'] = [
+                        'kullanici' => $kullanici,
+                        'sifre'     => $sifre,
+                        'firma'     => $firma_adi,
+                        'ts'        => time(),
+                    ];
                     redirect(SITE_URL . '/yonetim/musteri-kullanici.php');
                 }
             }
@@ -67,7 +79,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     WHERE id=?
                 ")->execute([password_hash($yeni, PASSWORD_BCRYPT), $id]);
                 audit_log($pdo, 'mp_user.reset_pwd', null, null, "mp_user:$id");
-                flash_set('success', "Yeni şifre: <code style='background:#fff;padding:2px 6px'>$yeni</code> — müşteriye iletin.");
+
+                // Kullanıcı bilgilerini al (kutuda göstermek için)
+                $uq = $pdo->prepare("
+                    SELECT mpk.kullanici_adi, m.unvan
+                    FROM musteri_portal_kullanicilar mpk
+                    LEFT JOIN mukellefler m ON m.id = mpk.mukellef_id
+                    WHERE mpk.id=?
+                ");
+                $uq->execute([$id]);
+                $u = $uq->fetch();
+
+                $_SESSION['yeni_mp_user'] = [
+                    'kullanici' => $u['kullanici_adi'] ?? '',
+                    'sifre'     => $yeni,
+                    'firma'     => $u['unvan'] ?? '',
+                    'ts'        => time(),
+                    'sifirlama' => true,
+                ];
             }
             redirect(SITE_URL . '/yonetim/musteri-kullanici.php');
         } elseif ($action === 'delete') {
@@ -97,8 +126,63 @@ $mukellefler = $pdo->query("SELECT id, vkn_tckn, unvan FROM mukellefler WHERE ak
 $toplam = count($mp_users);
 $aktif = count(array_filter($mp_users, fn($u) => $u['aktif']));
 
+// Yeni oluşturulan kullanıcı/şifre varsa (büyük kutuda göster)
+$yeni_user = null;
+if (!empty($_SESSION['yeni_mp_user']) && (int)($_SESSION['yeni_mp_user']['ts'] ?? 0) > time() - 300) {
+    $yeni_user = $_SESSION['yeni_mp_user'];
+    unset($_SESSION['yeni_mp_user']);
+}
+
 render_header('Müşteri Portalı Kullanıcıları', 'musteri-kullanici');
 ?>
+
+<?php if ($yeni_user): ?>
+<!-- ═══ YENİ KULLANICI ŞİFRE KUTUSU ═══ -->
+<div style="background:linear-gradient(135deg,#065f46 0%,#059669 100%);color:#fff;padding:24px 28px;border-radius:12px;margin-bottom:20px;box-shadow:0 10px 30px rgba(5,150,105,0.25);position:relative;overflow:hidden">
+    <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(255,255,255,0.08);border-radius:50%"></div>
+    <div style="position:relative">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+            <div style="width:40px;height:40px;background:rgba(255,255,255,0.2);border-radius:10px;display:flex;align-items:center;justify-content:center">
+                <?= icon('check', 20) ?>
+            </div>
+            <div>
+                <h2 style="margin:0;font-size:20px;font-weight:700">
+                    <?= !empty($yeni_user['sifirlama']) ? 'Şifre Sıfırlandı' : 'Kullanıcı Oluşturuldu' ?>
+                </h2>
+                <div style="font-size:13px;opacity:0.85;margin-top:2px">
+                    <?php if ($yeni_user['firma']): ?>
+                        <?= h($yeni_user['firma']) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;background:rgba(0,0,0,0.15);padding:16px;border-radius:10px;margin-bottom:12px">
+            <div>
+                <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;opacity:0.8;margin-bottom:4px">Kullanıcı Adı</div>
+                <div style="font-family:'SF Mono',Consolas,monospace;font-size:16px;font-weight:700;user-select:all"><?= h($yeni_user['kullanici']) ?></div>
+            </div>
+            <div>
+                <div style="font-size:11px;text-transform:uppercase;letter-spacing:0.5px;opacity:0.8;margin-bottom:4px">Şifre</div>
+                <div style="display:flex;align-items:center;gap:10px">
+                    <div style="font-family:'SF Mono',Consolas,monospace;font-size:16px;font-weight:700;letter-spacing:0.5px;user-select:all" id="yeni-sifre-txt"><?= h($yeni_user['sifre']) ?></div>
+                    <button onclick="navigator.clipboard.writeText(document.getElementById('yeni-sifre-txt').textContent);this.innerText='✓ Kopyalandı';setTimeout(()=>{this.innerText='Kopyala'},2000);return false" style="background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);color:#fff;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer">Kopyala</button>
+                </div>
+            </div>
+        </div>
+
+        <div style="font-size:13px;display:flex;align-items:flex-start;gap:10px;background:rgba(0,0,0,0.1);padding:12px 14px;border-radius:8px">
+            <div style="flex-shrink:0;margin-top:1px"><?= icon('alert', 16) ?></div>
+            <div style="line-height:1.5">
+                <strong>Bu bilgi yalnızca bir kez görünür!</strong>
+                Müşteriye iletmek için kopyalayın veya not alın.
+                Müşteri ilk giriş yaptığında şifreyi kendisi değiştirecek.
+                Sayfayı yenilediğinizde bu kutu kaybolur.
+            </div>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
 
 <div class="page-head">
     <div>

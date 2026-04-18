@@ -198,6 +198,24 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS musteri_portal_log (
     KEY idx_tarih (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+// ═══ DUYURULAR (v1.3.0+) — Admin'in müşterilere duyuru yayınlaması için
+$pdo->exec("CREATE TABLE IF NOT EXISTS duyurular (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    baslik VARCHAR(200) NOT NULL,
+    icerik TEXT NOT NULL,
+    tip ENUM('bilgi','uyari','onemli','bakim') DEFAULT 'bilgi',
+    hedef ENUM('musteri','admin','her_ikisi') DEFAULT 'musteri',
+    aktif TINYINT(1) DEFAULT 1,
+    baslangic_tarihi DATETIME DEFAULT CURRENT_TIMESTAMP,
+    bitis_tarihi DATETIME DEFAULT NULL,
+    created_by INT UNSIGNED DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    KEY idx_aktif (aktif),
+    KEY idx_hedef (hedef),
+    KEY idx_bitis (bitis_tarihi)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+
 // ═══ SEED: İLK ADMIN ═══════════════════════════════════════
 
 try {

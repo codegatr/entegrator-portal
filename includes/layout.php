@@ -35,6 +35,9 @@ function icon(string $name, int $size = 18): string
             'info'      => '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>',
             'edit'      => '<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>',
             'trash'     => '<path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>',
+            'megaphone' => '<path d="M18 11v-1c0-.55-.45-1-1-1h-5.17L13 6.59c.39-.39.39-1.02 0-1.41s-1.02-.39-1.41 0L7.59 9H4c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h3l3.09 3.09c.39.39 1.02.39 1.41 0s.39-1.02 0-1.41L9.83 19H17c.55 0 1-.45 1-1v-1h2c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1h-2z"/>',
+            'edit'      => '<path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>',
+            'help'      => '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>',
             'download'  => '<path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>',
             'upload'    => '<path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/>',
             'eye'       => '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>',
@@ -80,6 +83,7 @@ function render_header(string $title = '', string $active = ''): void
         ['ayarlar',   'Ayarlar',      'settings',   'admin',    '/yonetim/ayarlar.php',    'yonetim'],
         ['kullanici', 'Kullanıcılar', 'users',      'admin',    '/yonetim/kullanici.php',  'yonetim'],
         ['musteri-kullanici', 'Müşteri Portal Kul.', 'shield', 'admin', '/yonetim/musteri-kullanici.php', 'yonetim'],
+        ['duyurular', 'Duyurular',    'megaphone',  'admin',    '/yonetim/duyurular.php',  'yonetim'],
         ['guncelleme','Güncelleme',   'update',     'admin',    '/yonetim/guncelleme.php', 'yonetim'],
         ['sifre',     'Şifrem',       'key',        'viewer',   '/yonetim/sifre.php',      'yonetim'],
     ];
@@ -111,6 +115,7 @@ function render_header(string $title = '', string $active = ''): void
         'ayarlar'    => ['Sistem Ayarları', 'Yapılandırma'],
         'kullanici'  => ['Kullanıcılar', 'Portal kullanıcıları'],
         'musteri-kullanici' => ['Müşteri Portal Kullanıcıları', 'Müşterilere özel portal erişimleri'],
+        'duyurular'  => ['Duyurular', 'Müşterilere ve admin panele duyuru yayınla'],
         'guncelleme' => ['Güncelleme', 'Yazılım yönetimi'],
         'sifre'      => ['Şifre', 'Hesap güvenliği'],
     ];

@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,13 +13,18 @@
     ".htaccess"
   ],
   "changelog": [
-    "v1.2.1 - Hotfix: Musteri portal login sorunu duzeltildi (session conflict)",
-    "v1.2.1 - config.php CODEGA_NO_AUTO_SESSION flag desteği",
-    "v1.2.1 - EDM tarzi detayli fatura listesi: 14 kolon, cok filtreli, sayfalama",
-    "v1.2.1 - Yeni kolonlar: mail_gonderim, portal_goruntuleme, irsaliye_no, departman, ozel_alan_1/2",
-    "v1.2.1 - Fatura detay sayfasinda goruntuleme sayaci",
-    "v1.2.0 - Musteri Portali (musteri-portal/)",
-    "v1.1.1 - Hotfix: musteri/index.php 500",
-    "v1.1.0 - Profesyonel tasarim + guncelleme sistemi"
+    "v1.3.0 - Duyuru sistemi: Admin duyuru yayinlar, musteriler dashboardda gorur",
+    "v1.3.0 - Zenginlestirilmis musteri dashboard: 8 modul, SVG trend grafigi",
+    "v1.3.0 - SSS/Yardim sayfasi: 17 soru-cevap, CODEGA'ya ozgu",
+    "v1.3.0 - Admin yeni sifre gosterimi: buyuk kutu + kopyalama butonu",
+    "v1.3.0 - HTML escape fix: flash mesajlarinda guvenli sifre gosterimi",
+    "v1.3.0 - Hizli destek kartlari: Telefon, WhatsApp, E-posta, Adres",
+    "v1.3.0 - En cok alinan urun/hizmet analizi",
+    "v1.3.0 - En buyuk faturalar listesi (medal ile)",
+    "v1.3.0 - Son aktivitelerim widgetu",
+    "v1.3.0 - Bu ay/gecen ay karsilastirmasi (% degisim)",
+    "v1.3.0 - Konya/Turkiye is gunu ve kultur dokunuslar",
+    "v1.2.1 - Musteri portal login fix + EDM tarzi liste",
+    "v1.2.0 - Musteri Portali (musteri-portal/)"
   ]
 }
