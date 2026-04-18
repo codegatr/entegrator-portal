@@ -14,15 +14,15 @@ if ($q !== '') {
     $par[] = '%'.$q.'%'; $par[] = '%'.$q.'%';
 }
 
-$total = (int)$pdo->query("SELECT COUNT(*) FROM mukellefler WHERE $where", $par)->fetchColumn();
-// PDO'da hazırlanmış kullanımı:
-$st = $pdo->prepare("SELECT * FROM mukellefler WHERE $where ORDER BY unvan LIMIT 200");
-$st->execute($par);
-$rows = $st->fetchAll();
-
+// Sayım
 $cnt_q = $pdo->prepare("SELECT COUNT(*) FROM mukellefler WHERE $where");
 $cnt_q->execute($par);
 $total = (int)$cnt_q->fetchColumn();
+
+// Liste
+$st = $pdo->prepare("SELECT * FROM mukellefler WHERE $where ORDER BY unvan LIMIT 200");
+$st->execute($par);
+$rows = $st->fetchAll();
 
 render_header('Müşteriler', 'musteri');
 ?>

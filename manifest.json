@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,10 +13,10 @@
     ".htaccess"
   ],
   "changelog": [
+    "v1.1.1 - Hotfix: musteri/index.php PDO::query() yerine prepare() + execute()",
     "v1.1.0 - Yeni profesyonel tasarim (Veriban/EDM/Izibiz esinli)",
     "v1.1.0 - Inline SVG iconlar (Font Awesome CDN bagimliligi kaldirildi)",
     "v1.1.0 - Modern dashboard: KPI kartlari, gercek zamanli widgetlar",
-    "v1.1.0 - Guncelleme sistemi: GitHub Releases entegrasyonu",
-    "v1.1.0 - Tum sayfalar yeniden tasarlandi"
+    "v1.1.0 - Guncelleme sistemi: GitHub Releases entegrasyonu"
   ]
 }
