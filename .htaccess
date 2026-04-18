@@ -1,0 +1,62 @@
+# CODEGA Entegratör Portal - Apache .htaccess
+# Flat structure - config.php, includes/, libs/, storage/ kökte
+# Bu dosya bu gizli dizinleri web erişiminden korur.
+
+# UTF-8
+AddDefaultCharset UTF-8
+Options -Indexes
+DirectoryIndex index.php
+
+# ═══════════════════════════════════════════════════════════
+# GÜVENLİK: Hassas dosya/dizin erişimini engelle
+# ═══════════════════════════════════════════════════════════
+
+# config.php ve config.example.php dışarıdan asla erişilemez
+<FilesMatch "^(config\.php|config\.example\.php|install\.lock|\.env|\.gitignore|composer\.(json|lock))$">
+    Require all denied
+</FilesMatch>
+
+# .md, LICENSE gibi dokümanlar web'den gizli
+<FilesMatch "\.(md|log|bak|sql|sh)$">
+    Require all denied
+</FilesMatch>
+
+# Hassas dizinlere tam erişim engeli
+RedirectMatch 403 ^/(includes|libs|storage)/.*$
+RedirectMatch 403 ^/\.git/.*$
+RedirectMatch 403 ^/\.vscode/.*$
+RedirectMatch 403 ^/\.idea/.*$
+
+# ═══════════════════════════════════════════════════════════
+# HTTPS zorla (Cloudflare/Proxy uyumlu)
+# ═══════════════════════════════════════════════════════════
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https
+    RewriteCond %{HTTP:CF-Visitor} !{"scheme":"https"}
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# ═══════════════════════════════════════════════════════════
+# Security Headers
+# ═══════════════════════════════════════════════════════════
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# ═══════════════════════════════════════════════════════════
+# Static asset cache
+# ═══════════════════════════════════════════════════════════
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+</IfModule>

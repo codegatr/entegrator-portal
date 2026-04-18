@@ -1,9 +1,8 @@
 # Kurulum Yönergeleri
 
-CODEGA Entegratör Portal'ın DirectAdmin shared hosting'e kurulumu. 2 farklı yol:
+CODEGA Entegratör Portal'ın **DirectAdmin Paylaşımlı Hosting**'e kurulumu.
 
-- **A) Web Installer (önerilen)** — Tarayıcıdan form doldur, her şey otomatik
-- **B) Manuel Kurulum** — Dosyaları elle düzenlersin
+Portal v1.0.3'ten itibaren **düz yapıda** (flat structure). Tüm dosyalar doğrudan `public_html/entegrator/` altına konur, alt `public/` dizini yok. Hassas dizinler (`includes/`, `libs/`, `storage/`, `config.php`) `.htaccess` ile korunur.
 
 ## Gereksinimler
 
@@ -14,7 +13,40 @@ CODEGA Entegratör Portal'ın DirectAdmin shared hosting'e kurulumu. 2 farklı y
 | PHP eklentileri | `pdo_mysql`, `dom`, `libxml`, `openssl`, `mbstring`, `json`, `curl` | aynı |
 | Apache modülleri | `mod_rewrite`, `mod_headers` | + `mod_expires` |
 | Disk | 500 MB | 5 GB+ (XML arşivi zamanla büyür) |
-| SSL | Let's Encrypt yeterli | Cloudflare + tam SSL |
+
+## Yapı
+
+Kurulumdan sonra `public_html/entegrator/` içinde:
+
+```
+entegrator/                  ← subdomain document root'u burası
+├── .htaccess                ← güvenlik + hassas dizinleri bloklar
+├── index.php                ← Dashboard
+├── login.php
+├── logout.php
+├── install.php              ← kurulum sonrası silinir
+├── config.php               ← installer tarafından oluşturulur
+├── fatura/
+│   ├── yeni.php
+│   ├── liste.php
+│   ├── detay.php
+│   └── indir.php
+├── musteri/
+│   ├── index.php
+│   └── duzenle.php
+├── log/index.php
+├── yonetim/
+│   ├── ayarlar.php
+│   ├── kullanici.php
+│   └── sifre.php
+├── api/mukellef-search.php
+├── assets/
+│   ├── style.css
+│   └── app.js
+├── includes/                ← .htaccess ile bloklu (web'den erişilemez)
+├── libs/                    ← .htaccess ile bloklu
+└── storage/                 ← .htaccess ile bloklu (XML arşivi)
+```
 
 ---
 
@@ -23,160 +55,160 @@ CODEGA Entegratör Portal'ın DirectAdmin shared hosting'e kurulumu. 2 farklı y
 ## Adım 1 — Subdomain Oluştur
 
 DirectAdmin panelinde:
-1. `Subdomain Management` (veya `Domain Setup` → subdomain ekle)
-2. Adı: `entegrator`
+
+1. `Subdomain Management` (ya da `Domain Setup` → subdomain ekle)
+2. Subdomain adı: `entegrator`
 3. Domain: `codega.com.tr`
-4. Oluşan yol: `https://entegrator.codega.com.tr`
+4. Sonuç: `https://entegrator.codega.com.tr`
+
+DirectAdmin otomatik şu dizini oluşturur:
+```
+/home/codega/domains/codega.com.tr/public_html/entegrator/
+```
+
+Bu dizin subdomain'in **document root'u**. Buraya koyduğun dosyalar web'den erişilebilir.
 
 ## Adım 2 — MySQL Database Oluştur
 
-**DirectAdmin'de MySQL nerede?** Sürüme göre değişir:
+**DirectAdmin'de MySQL Management nerede?**
 
-- **Klasik arayüz:** `Account Manager` kategorisi → **`MySQL Management`**
-- **Evolution arayüzü:** Üstte arama kutusuna `mysql` yaz → çıkar
+- **Klasik arayüz:** `Account Manager` kategorisi → `MySQL Management`
+- **Evolution arayüzü:** Üstte arama kutusuna `mysql` yaz
 - **Alternatif isim:** `MySQL Databases`
 
-Bulamazsan hosting sağlayıcına "MySQL oluşturma yetkisi verir misiniz?" yazabilirsin.
+### Yeni Database
 
-### Yeni Database Oluşturma
-
-1. **`Create new Database`** butonuna tıkla
+1. `Create new Database`
 2. Doldur:
-   - **Database Name:** `entegrator_portal` — tam ad otomatik `codega_entegrator_portal` olur
-   - **Database Username:** `entegrator_portal` — tam ad `codega_entegrator_portal` olur
-   - **Password:** **Random** butonuna tıkla (güçlü şifre üretir)
-   - Şifreyi **not al** — birazdan installer'a gireceksin
+   - **Database Name:** `entegrator_portal` → otomatik prefix ile `codega_entegrator_portal` olur
+   - **Database Username:** `entegrator_portal` → `codega_entegrator_portal`
+   - **Password:** `Random` butonuyla güçlü şifre üret — **not al**
 3. `Create`
 
 ### Doğrulama
 
-DirectAdmin'de `phpMyAdmin` aç → sol listede `codega_entegrator_portal` görmeli, tıkla → boş (0 tablo) olmalı.
+phpMyAdmin'de `codega_entegrator_portal` görünmeli, boş olmalı.
 
 ## Adım 3 — Dosyaları Yükle
 
-### SSH ile (önerilen)
+Subdomain dizinini temizle ve portal dosyalarını buraya aç.
+
+### SSH ile (hızlı yol)
 
 ```bash
 ssh codega@codega.com.tr
 
-cd /home/codega/domains/codega.com.tr/public_html/
-# Eski boş entegrator/ klasörünü temizle (varsa)
-rm -rf entegrator
+cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 
-# Portal'ı clone et
-git clone https://github.com/codegatr/entegrator-portal.git entegrator
-cd entegrator
+# Eski içerik varsa temizle (örn. eski karşılaştırma sitesi)
+# DİKKAT: Yedek almadan silme
+rm -rf ./* ./.htaccess 2>/dev/null
+ls -la   # boş olmalı
+
+# Portal'ı buraya aç
+cd /tmp
+wget https://github.com/codegatr/entegrator-portal/releases/latest/download/entegrator-portal-v1.0.3.zip
+unzip entegrator-portal-v1.0.3.zip -d /home/codega/domains/codega.com.tr/public_html/entegrator/
+
+cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 ls -la
-# public/, includes/, libs/, storage/ vb. görmelisin
+# index.php, login.php, config.example.php, install.php, .htaccess vb. görmelisin
 ```
 
-### ZIP ile (SSH yoksa)
+### ZIP ile (File Manager üzerinden)
 
-1. İndir: https://github.com/codegatr/entegrator-portal/releases/latest
-2. DirectAdmin File Manager → `domains/codega.com.tr/public_html/entegrator/`
-3. Upload → ZIP'i yükle → Extract
+1. ZIP indir: https://github.com/codegatr/entegrator-portal/releases/latest (`entegrator-portal-v1.0.3.zip`)
+2. DirectAdmin → `File Manager`
+3. `domains/codega.com.tr/public_html/entegrator/` dizinine git
+4. Mevcut içeriği temizle (yedek al!)
+5. Üst menüden `Upload` → ZIP'i yükle
+6. ZIP'e sağ tık → `Extract`
+7. Ekran görüntündeki gibi görünmeli: `includes/`, `libs/`, `public/`, `storage/`, ... — eğer **public/** klasörü varsa **eski sürüm** (v1.0.2 ve öncesi). v1.0.3 ZIP'inde public/ dizini YOK, her şey doğrudan kökte.
 
-## Adım 4 — Subdomain Document Root'unu Ayarla
+> ⚠️ **ZIP içinde bir alt klasör varsa** (ör. `entegrator-portal-v1.0.3/` klasörünün içinde dosyalar), o klasörün **içeriğini** taşı, klasörün kendisini değil. Son halinde `entegrator/` dizini altında doğrudan `index.php`, `.htaccess`, `install.php` vs. olmalı.
 
-**Bu adım kritik — güvenlik için şart.**
+### Git ile (güncellenebilir)
 
-DirectAdmin → `Subdomain Management` → `entegrator.codega.com.tr` satırında `Edit` veya `Modify Public HTML Path`:
+```bash
+cd /home/codega/domains/codega.com.tr/public_html/
+rm -rf entegrator/*          # içeriği boşalt, klasörü silme
+cd entegrator
+git init
+git remote add origin https://github.com/codegatr/entegrator-portal.git
+git fetch origin
+git checkout -f main
+ls -la
+```
 
-- **Public HTML path:** `/public_html/entegrator/public`
-- Kaydet
+## Adım 4 — PHP Sürümü
 
-> ⚠️ Eğer `Public HTML Path` seçeneği yoksa — panel buna izin vermiyorsa — bkz. [Durum B](#durum-b-document-root-değiştirilemezse) bölümü aşağıda.
+DirectAdmin → `Domain Setup` → `codega.com.tr` → `PHP Version Selector` (veya `Select PHP Version`)
 
-## Adım 5 — SSL Sertifikası Aktifleştir
+- Subdomain için **PHP 8.3** seç
+- Aktif eklentileri kontrol et:
+  - ✅ `pdo_mysql`
+  - ✅ `openssl`
+  - ✅ `dom` (libxml dahil)
+  - ✅ `mbstring`
+  - ✅ `json`
+  - ✅ `curl`
 
-Tarayıcı installer'ı açabilsin diye SSL gerekli.
+## Adım 5 — SSL Sertifikası
 
-DirectAdmin → `SSL Certificates` → `entegrator.codega.com.tr` için:
+DirectAdmin → `SSL Certificates` → `entegrator.codega.com.tr`:
 - `Free & automatic certificate from Let's Encrypt`
 - `Obtain Certificate`
-
-Birkaç dakika bekle, sertifika gelsin.
+- 1-2 dakika bekle, aktifleşir.
 
 ## Adım 6 — Installer'ı Çalıştır
 
-Tarayıcıda aç:
+Tarayıcıda:
 
 ### **https://entegrator.codega.com.tr/install.php**
 
-Karşına 5 adımlı kurulum sihirbazı gelir:
+5 adımlı sihirbaz:
 
-1. **Sistem Kontrolü** — PHP sürümü, eklentiler, yazma izinleri otomatik kontrol edilir
-2. **Veritabanı** — Adım 2'de aldığın bilgileri gir (host: `localhost`, DB adı/user: `codega_entegrator_portal`, şifre)
-3. **Firma Bilgileri** — CODEGA'nın gerçek VKN, vergi dairesi, adres vb.
-4. **Admin Hesabı** — Kullanıcı adı + güçlü bir şifre belirle (en az 8 karakter)
-5. **Tamam!** — config.php yazılır, 7 tablo otomatik oluşur, admin kullanıcın hazır
+1. **Sistem Kontrolü** — PHP sürümü, eklentiler, yazma izinleri otomatik kontrol
+2. **Veritabanı** — Adım 2'deki bilgiler (host: `localhost`, DB adı + user: `codega_entegrator_portal`, şifre)
+3. **Firma Bilgileri** — CODEGA gerçek VKN, vergi dairesi, adres vs.
+4. **Admin Hesabı** — Kullanıcı adı + güçlü şifre (en az 8 karakter)
+5. **Tamam!** — config.php yazılır, 7 tablo oluşur, admin kullanıcı seed'lenir, `install.lock` dosyası oluşur
 
-Installer tamamlandığında → `install.lock` dosyası oluşur, installer tekrar çalışmaz.
+Installer tamamlandığında "Portal'a Giriş Yap" butonu çıkar.
 
-## Adım 7 — install.php Dosyasını Sil (Güvenlik)
+## Adım 7 — install.php Dosyasını Sil (Güvenlik!)
 
 Kurulum tamamlandıktan sonra installer'ı sunucudan sil:
 
 ```bash
 ssh codega@codega.com.tr
 cd /home/codega/domains/codega.com.tr/public_html/entegrator/
-rm public/install.php
+rm install.php
 ```
 
-veya DirectAdmin File Manager → `entegrator/public/install.php` → seç → **Delete**
+veya DirectAdmin File Manager → `install.php` → seç → **Delete**
 
-## Adım 8 — İlk Giriş
+> `install.lock` dosyası installer'ı kilitler ama yine de `install.php` dosyasını silmek en güvenli yol.
 
-Tarayıcıda: **https://entegrator.codega.com.tr/**
+## Adım 8 — İlk Giriş ve Test
 
-Installer'da belirlediğin **kullanıcı adı + şifre** ile giriş yap. Dashboard açılmalı. İlk şeyler:
+**https://entegrator.codega.com.tr/**
 
-1. **Yeni Müşteri ekle** (Müşteriler > Yeni) — test için kendi firmana bir VKN ekle
-2. **Yeni Fatura oluştur** (Yeni Fatura) — birkaç satır gir → oluştur
-3. **Fatura Detay** — XML görüntüleyici çalışıyor mu kontrol et
-4. **XML İndir** — dosya iniyor mu kontrol et
+Installer'da belirlediğin kullanıcı adı + şifre ile giriş yap.
 
-Her şey çalışıyorsa kurulum tamam.
-
----
-
-## Durum B: Document Root Değiştirilemezse
-
-Panel `Public HTML Path` değiştirmeye izin vermiyorsa (bazı ucuz shared hosting'ler kısıtlı). Çözüm: root'a mod_rewrite `.htaccess` koy, tüm istekleri `public/` altına yönlendir.
-
-```bash
-cd /home/codega/domains/codega.com.tr/public_html/entegrator/
-
-cat > .htaccess <<'HTACCESS'
-# Tüm istekleri public/ altına yönlendir
-RewriteEngine On
-RewriteCond %{REQUEST_URI} !^/public/
-RewriteRule ^(.*)$ public/$1 [L]
-
-# Hassas dosyalara dışarıdan erişim engeli
-RedirectMatch 403 ^/config\.php$
-RedirectMatch 403 ^/config\.example\.php$
-RedirectMatch 403 ^/includes/
-RedirectMatch 403 ^/libs/
-RedirectMatch 403 ^/storage/
-RedirectMatch 403 ^/\.git
-RedirectMatch 403 ^/KURULUM\.md$
-RedirectMatch 403 ^/README\.md$
-RedirectMatch 403 ^/LICENSE$
-HTACCESS
-```
-
-Sonra **Adım 5** (SSL) ve **Adım 6** (installer) ile aynı şekilde devam et. Installer `public/install.php`'yi `/install.php` URL'inden açar.
+Test sırası:
+1. **Yeni Müşteri ekle** (Müşteriler > Yeni)
+2. **Yeni Fatura oluştur** (Yeni Fatura) — birkaç satır, KDV %20
+3. **Fatura Detay** → XML görüntüleyici çalışıyor mu?
+4. **XML İndir** → `.xml` dosyası iniyor mu?
 
 ---
 
 # B) Manuel Kurulum (Installer Kullanmadan)
 
-Installer'a güvenmiyorsan veya özel senaryon varsa:
+## B.1 — Adım 1-4 (subdomain, MySQL, dosya yükleme, PHP) aynı
 
-## B.1 — Dosyaları yükle (yukarıdaki Adım 1-4 aynı)
-
-## B.2 — config.php'yi elle hazırla
+## B.2 — config.php Elle Hazırla
 
 ```bash
 cd /home/codega/domains/codega.com.tr/public_html/entegrator/
@@ -184,20 +216,35 @@ cp config.example.php config.php
 nano config.php
 ```
 
-Şu değerleri güncelle:
-- `DB_NAME`, `DB_USER`, `DB_PASS`
-- `SITE_URL`, `FIRMA_VKN`, `FIRMA_VERGI_DAIRESI`, adres bilgileri
-- `ADMIN_DEFAULT_PASS` (ilk admin şifresi — sonra değişir)
-- `CSRF_SECRET` (üret: `php -r "echo bin2hex(random_bytes(16));"`)
+Güncelle:
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'codega_entegrator_portal');
+define('DB_USER', 'codega_entegrator_portal');
+define('DB_PASS', 'ADIM_2_DE_NOT_ALDIGIN_SIFRE');
 
+define('SITE_URL',   'https://entegrator.codega.com.tr');
+
+define('FIRMA_ADI',          'CODEGA Yazılım Hizmetleri');
+define('FIRMA_VKN',          '1234567890');              // ⚠ GERÇEK VKN
+define('FIRMA_VERGI_DAIRESI','Selçuk');                  // ⚠ GERÇEK
+// ... diğer firma bilgileri
+
+define('CSRF_SECRET', 'rastgele_32_karakter_string');    // üret: php -r "echo bin2hex(random_bytes(16));"
+define('ADMIN_DEFAULT_PASS', 'GuclusifreSec123!');       // ilk admin şifresi
+
+define('DEBUG_MODE', false);   // prod'da MUTLAKA false
+```
+
+İzinler:
 ```bash
 chmod 600 config.php
 chmod -R 755 storage/
 ```
 
-## B.3 — İlk Açılış
+## B.3 — Tarayıcıdan Aç
 
-Tarayıcıda `https://entegrator.codega.com.tr/` aç. Migration otomatik çalışır, tablolar oluşur, admin hesabı `admin` / (config'deki) şifreyle seed'lenir.
+`https://entegrator.codega.com.tr/` → migration otomatik çalışır, tablolar oluşur, `admin` kullanıcısı seed'lenir.
 
 Giriş → zorunlu şifre değişimi → dashboard.
 
@@ -205,78 +252,83 @@ Giriş → zorunlu şifre değişimi → dashboard.
 
 # Kurulum Sonrası Sağlık Kontrolü
 
-Her iki yolda da sonrası şunları test et:
+SSH'dan:
 
 ```bash
-# SSH'dan 10 saniyelik health check
 php -r "
 require '/home/codega/domains/codega.com.tr/public_html/entegrator/config.php';
 \$tables = \$pdo->query('SHOW TABLES')->fetchAll(PDO::FETCH_COLUMN);
 echo 'Tablo sayisi: ' . count(\$tables) . PHP_EOL;
 echo 'Tablolar: ' . implode(', ', \$tables) . PHP_EOL;
-echo 'Admin kullanici: ' . \$pdo->query(\"SELECT COUNT(*) FROM kullanicilar WHERE rol='admin'\")->fetchColumn() . PHP_EOL;
-echo 'Kurulum kaydi: ' . \$pdo->query(\"SELECT COUNT(*) FROM sistem_log WHERE olay='install.complete'\")->fetchColumn() . PHP_EOL;
+echo 'Admin sayisi: ' . \$pdo->query(\"SELECT COUNT(*) FROM kullanicilar WHERE rol='admin'\")->fetchColumn() . PHP_EOL;
 "
 ```
 
-Beklenen çıktı:
+Beklenen:
 ```
 Tablo sayisi: 7
 Tablolar: ayarlar, fatura_log, fatura_satirlari, faturalar, kullanicilar, mukellefler, sistem_log
-Admin kullanici: 1
-Kurulum kaydi: 1   (installer ile kurduysan)
+Admin sayisi: 1
 ```
 
-Web tarafı:
+Web tarafı kontrol listesi:
+
 ```
-☐ https://entegrator.codega.com.tr → login ekranı
-☐ https://entegrator.codega.com.tr/config.php → 403 veya boş (ERİŞİLMEMELİ)
-☐ https://entegrator.codega.com.tr/storage/ → 403 (ERİŞİLMEMELİ)
-☐ https://entegrator.codega.com.tr/install.php → 404 veya yok (silinmiş olmalı)
-☐ Giriş başarılı
-☐ Dashboard açıldı
+☐ https://entegrator.codega.com.tr             → login ekranı
+☐ https://entegrator.codega.com.tr/config.php   → 403 Forbidden (ERİŞİLMEMELİ)
+☐ https://entegrator.codega.com.tr/storage/     → 403 Forbidden
+☐ https://entegrator.codega.com.tr/includes/    → 403 Forbidden
+☐ https://entegrator.codega.com.tr/libs/        → 403 Forbidden
+☐ https://entegrator.codega.com.tr/install.php  → 404 Not Found (silmiş olmalısın)
+☐ https://entegrator.codega.com.tr/KURULUM.md   → 403 Forbidden
+☐ Dashboard girişi başarılı
+☐ Test müşterisi eklendi
+☐ Test faturası oluşturuldu, XML üretildi
+```
+
+`config.php` web'den erişilebiliyorsa (HTML/PHP kaynak kodu dönüyorsa) **ACİL** — Apache'de `mod_rewrite` veya `AllowOverride` kapalı demektir. Hosting'ten talep et.
+
+Hızlı test:
+```bash
+curl -s -o /dev/null -w "%{http_code}" https://entegrator.codega.com.tr/config.php
+# 403 veya 404 beklenir. 200 geliyorsa GÜVENLİK AÇIĞI.
 ```
 
 ---
 
-# Güncelleme (Update)
-
-Yeni sürüm çıktığında mevcut kurulumu nasıl yenilersin:
+# Güncelleme
 
 ## Git ile (önerilen)
 
 ```bash
 cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 git pull
-# config.php .gitignore'da — dokunulmaz
-# storage/ .gitignore'da — dokunulmaz
-# install.lock'a dokunulmaz
+# config.php, storage/, install.lock — .gitignore'da, dokunulmaz
 ```
 
 ## ZIP ile
 
-1. Yeni release ZIP'ini indir
-2. `public/`, `includes/`, `libs/` dizinlerini üzerine yaz
-3. `config.php`, `storage/`, `install.lock` dosyalarına **dokunma**
-4. Tarayıcıdan aç — migration otomatik yeni tabloları ekler (varsa)
+1. Yeni ZIP'i indir, aç
+2. `config.php`, `storage/`, `install.lock` **hariç** tüm dosya/dizini üzerine yaz
+3. Tarayıcıdan portal'ı aç — migration otomatik yeni tabloları ekler
 
 ---
 
-# Yedekleme (Kritik!)
+# Yedekleme Cron'u
 
-DirectAdmin → **Cron Jobs** → `Create a new Cron Job`:
+DirectAdmin → `Cron Jobs`:
 
-**Haftalık DB yedeği** (Pazar 03:00):
+**Haftalık DB yedeği (Pazar 03:00):**
 ```
 0 3 * * 0 mysqldump -u codega_entegrator_portal -p'DB_SIFRE' codega_entegrator_portal | gzip > /home/codega/domains/codega.com.tr/public_html/entegrator/storage/backups/db_$(date +\%Y\%m\%d).sql.gz
 ```
 
-**Aylık XML yedeği** (ayın 1'i 04:00):
+**Aylık XML yedeği (ayın 1'i 04:00):**
 ```
 0 4 1 * * tar -czf /home/codega/backups/entegrator-xml-$(date +\%Y\%m).tar.gz /home/codega/domains/codega.com.tr/public_html/entegrator/storage/xml/
 ```
 
-İlk seferde:
+İlk seferinde:
 ```bash
 mkdir -p /home/codega/backups
 chmod 700 /home/codega/backups
@@ -288,60 +340,54 @@ chmod 700 /home/codega/backups
 
 ### "MySQL Management bulunamadı"
 
-DirectAdmin sürümüne göre:
-- Klasik arayüz: `Account Manager` → MySQL Management
-- Evolution: üstte arama kutusu → `mysql` yaz
-- Yine yoksa: hosting sağlayıcına talep et
+- Klasik arayüz: `Account Manager` kategorisi → MySQL Management
+- Evolution arayüzü: Üstte arama kutusu → `mysql` yaz
+- Yoksa hosting'e açtır
 
-### "Installer 'config.php yazılamıyor' diyor"
+### "Installer 'dizin yazılamıyor' diyor"
 
-Dizin yazma izni yok. SSH'dan:
 ```bash
-cd /home/codega/domains/codega.com.tr/public_html/
-chmod 755 entegrator/
-# Installer'ı tekrar çalıştır
+chmod 755 /home/codega/domains/codega.com.tr/public_html/entegrator/
 ```
 
-### "DB bağlantı hatası: Access denied"
-
-MySQL kullanıcısına yetki verilmemiş olabilir. DirectAdmin MySQL Management'ta:
-- Database adına tıkla
-- User listesinde doğru kullanıcıyı ekle, "All privileges" ver
-
-### "500 Internal Server Error"
+### "config.php yazıldı ama 500 hatası veriyor"
 
 ```bash
 # Error log
 tail -50 /home/codega/domains/codega.com.tr/logs/error.log
 
-# Geçici debug
-nano config.php
-# DEBUG_MODE'u true yap, sorunu gör, false yap
+# Geçici olarak debug aç
+nano /home/codega/domains/codega.com.tr/public_html/entegrator/config.php
+# DEBUG_MODE'u true yap, hatayı oku, sorunu çöz, false yap
 ```
 
-### "Installer'a erişemiyorum (404)"
-
-- Document root `public/` olarak ayarlanmadı → Adım 4'ü kontrol et
-- SSL aktif değil → Adım 5'i kontrol et
-- DNS propagate olmadı → 15 dk bekle, `ping entegrator.codega.com.tr` dene
-
-### "install.lock siliyorum ama installer tekrar çalışmıyor"
-
-Session sorunu. Tarayıcıyı tamamen kapat, aç. Veya Incognito pencere kullan.
-
-### "Müşteri autocomplete çalışmıyor (yeni fatura sayfası)"
-
-Browser'ın Network sekmesinde:
-- `/api/mukellef-search.php?q=xxx` → 200 ve JSON dönüyor mu?
-- 404 → `public/api/` dizini yok, dosyaları tekrar yükle
-- 401 → oturum düşmüş, tekrar giriş yap
-
-### "Fatura oluşturuluyor ama XML dosyası diske yazılmıyor"
+### "config.php web'den erişilebilir oluyor (kötü senaryo!)"
 
 ```bash
-ls -la /home/codega/domains/codega.com.tr/public_html/entegrator/storage/xml/
-# Sahibi codega, 755 olmalı
-chmod -R 755 storage/
+# Test:
+curl -v https://entegrator.codega.com.tr/config.php 2>&1 | grep -E "HTTP|<\?"
+```
+
+Kaynak kodu dönüyorsa `.htaccess` çalışmıyor demektir. Olası sebepler:
+1. Apache `AllowOverride None` — hosting sağlayıcıdan `AllowOverride All` iste
+2. `.htaccess` dosyası yüklenmemiş — File Manager'da görünüyor mu kontrol et (gizli dosyaları göster seçeneğiyle)
+3. `mod_rewrite` devredışı — `php -m` ile kontrol, aktif değilse hosting'e söyle
+
+### "Müşteri autocomplete çalışmıyor"
+
+Browser DevTools > Network:
+- `/api/mukellef-search.php?q=test` → 200 + JSON bekleniyor
+- 404 → dosya eksik, yeniden yükle
+- 401 → oturum düşmüş
+
+### "install.lock'u sildim, tekrar çalışmıyor"
+
+Session sorunu. Tarayıcıyı tamamen kapat, aç. Veya Incognito.
+
+### "Fatura oluşturuluyor ama XML dosyası yazılmıyor"
+
+```bash
+chmod -R 755 /home/codega/domains/codega.com.tr/public_html/entegrator/storage/
 ```
 
 ---
@@ -351,4 +397,4 @@ chmod -R 755 storage/
 - Bug report: https://github.com/codegatr/entegrator-portal/issues
 - E-posta: info@codega.com.tr
 
-Kurulumda takılırsan ekran görüntüsü + hata mesajı paylaş — çözeriz.
+Kurulumda takılırsan ekran görüntüsü + hata mesajı at, çözeriz.

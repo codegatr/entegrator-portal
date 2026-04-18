@@ -24,22 +24,11 @@
 // SAFETY: Kurulum tamamlandıysa çalıştırma
 // ═══════════════════════════════════════════════════════════
 
-// install.php `public/` içindeyse config.php bir üst dizinde; aynı dizindeyse burada
-$possible_roots = [
-    dirname(__DIR__),  // public/install.php → /entegrator/
-    __DIR__,           // /entegrator/install.php (Durum B)
-];
+// Yapı artık flat — install.php kök dizinde, yanında config.php, includes/, libs/, storage/
+$ROOT = __DIR__;
 
-$ROOT = null;
-foreach ($possible_roots as $p) {
-    if (file_exists($p . '/includes/init.php') && file_exists($p . '/libs/entegrator-gib')) {
-        $ROOT = $p;
-        break;
-    }
-}
-
-if (!$ROOT) {
-    die('HATA: Portal dizini bulunamadı. install.php yanlış yere konmuş olabilir. Lütfen portal dosyalarının doğru yerde olduğunu kontrol edin.');
+if (!is_dir($ROOT . '/includes') || !is_dir($ROOT . '/libs/entegrator-gib')) {
+    die('HATA: Portal dosyaları eksik. install.php aynı dizinde includes/, libs/, storage/ klasörleri olmalı. Dosyalar doğru yere yüklendi mi?');
 }
 
 $CONFIG_PATH = $ROOT . '/config.php';
@@ -336,7 +325,7 @@ define('SESSION_NAME', 'codega_portal_session');
 define('SESSION_LIFETIME', 28800);
 
 // ── Paths ──
-define('ROOT_PATH',     dirname(__DIR__));
+define('ROOT_PATH',     __DIR__);  // config.php kök dizinde (flat structure)
 define('STORAGE_PATH',  ROOT_PATH . '/storage');
 define('XML_PATH',      STORAGE_PATH . '/xml');
 define('PDF_PATH',      STORAGE_PATH . '/pdf');

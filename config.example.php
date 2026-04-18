@@ -47,7 +47,7 @@ define('SESSION_NAME', 'codega_portal_session');
 define('SESSION_LIFETIME', 28800);  // 8 saat
 
 // ── Paths ──────────────────────────────────────────────
-define('ROOT_PATH',     dirname(__DIR__));  // /public'in parent'ı
+define('ROOT_PATH',     __DIR__);  // config.php artık doğrudan root'ta
 define('STORAGE_PATH',  ROOT_PATH . '/storage');
 define('XML_PATH',      STORAGE_PATH . '/xml');
 define('PDF_PATH',      STORAGE_PATH . '/pdf');
