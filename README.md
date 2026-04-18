@@ -4,8 +4,9 @@
 
 > Bu, CODEGA'nın GİB Onaylı Özel Entegratör olma sürecinde ilerlerken kullanacağı iç **çalışma portalıdır** (Seviye 2). Gerçek entegratör olunduğunda müşteriler için evrilecek.
 
-## Özellikler (v1.0)
+## Özellikler (v1.0.2)
 
+- **🧙 Web Installer** — tarayıcıdan form doldur, DB/firma/admin ayarları adım adım kurulur ✨ *yeni*
 - **Login + session** — bcrypt şifre, rol tabanlı erişim (admin / operator / viewer), 5 yanlış denemede 10 dk kilit
 - **Dashboard** — KPI kartları, son faturalar, durum dağılımı, sistem sağlığı, aktivite timeline
 - **Müşteri (Mükellef) Yönetimi** — VKN/TCKN auto-detect, vergi dairesi validasyonu, e-fatura mükellef flag'i
@@ -27,13 +28,18 @@
 
 ## Kurulum
 
-Detaylı kurulum için [KURULUM.md](KURULUM.md) dosyasına bakın. Özetle:
+**Yeni: v1.0.2 ile web installer geldi.** Detaylı yönergeler için [KURULUM.md](KURULUM.md).
+
+Özet:
 
 1. DirectAdmin'de subdomain oluştur (`entegrator.codega.com.tr`)
-2. Subdomain'in **document root'unu** `public/` klasörüne yönlendir
-3. MySQL database + user oluştur
-4. ZIP'i sunucuya aç, `config.example.php`'yi `config.php` olarak kopyala ve düzenle
-5. Subdomain'i aç → `admin` / `admin123` ile giriş → zorunlu şifre değiştirme
+2. MySQL database oluştur (`codega_entegrator_portal`)
+3. Portal'ı clone et: `git clone https://github.com/codegatr/entegrator-portal.git entegrator`
+4. Document root'u `entegrator/public/` yap
+5. SSL sertifikası aktifleştir
+6. **Tarayıcıda aç: `https://entegrator.codega.com.tr/install.php`**
+7. 5 adımlı sihirbaz seni baştan sona geçirir → admin hesabı, firma bilgileri, DB bağlantısı hepsi otomatik
+8. Kurulum bitince `install.php` dosyasını sil
 
 ## Güvenlik
 
