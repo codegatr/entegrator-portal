@@ -14,9 +14,9 @@ define('DB_PASS', '___DB_PASSWORD_HERE___');
 define('DB_CHARSET', 'utf8mb4');
 
 // ── Site ────────────────────────────────────────────────────
-define('SITE_URL',   'https://efatura.codega.com.tr');
-define('SITE_NAME',  'CODEGA e-Fatura Portal');
-define('SITE_SHORT', 'CODEGA Portal');
+define('SITE_URL',   'https://entegrator.codega.com.tr');
+define('SITE_NAME',  'CODEGA Entegratör Portal');
+define('SITE_SHORT', 'CODEGA');
 define('SITE_OWNER', 'CODEGA');
 define('CONTACT_EMAIL', 'info@codega.com.tr');
 
