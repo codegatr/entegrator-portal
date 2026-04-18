@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,15 +13,13 @@
     ".htaccess"
   ],
   "changelog": [
-    "v1.2.0 - Musteri Portali: musteri-portal/ dizini eklendi",
-    "v1.2.0 - Musteri Portali: ayri login, dashboard, fatura listesi ve detay",
-    "v1.2.0 - Musteri Portali: firma izolasyonu, guvenli erisim",
-    "v1.2.0 - Yeni tablolar: musteri_portal_kullanicilar, musteri_portal_log",
-    "v1.2.0 - Admin'de yeni menu: Yonetim > Musteri Portal Kul.",
-    "v1.2.0 - Temizlik: kullanici.php yeniden tasarlandi, rol aciklamalari eklendi",
-    "v1.2.0 - Bugfix: card-h/card-b -> card-head/card-body CSS class tutarliligi",
-    "v1.1.1 - Hotfix: musteri/index.php 500 hatasi",
-    "v1.1.0 - Profesyonel tasarim (Veriban/EDM/Izibiz esinli)",
-    "v1.1.0 - Guncelleme sistemi"
+    "v1.2.1 - Hotfix: Musteri portal login sorunu duzeltildi (session conflict)",
+    "v1.2.1 - config.php CODEGA_NO_AUTO_SESSION flag desteği",
+    "v1.2.1 - EDM tarzi detayli fatura listesi: 14 kolon, cok filtreli, sayfalama",
+    "v1.2.1 - Yeni kolonlar: mail_gonderim, portal_goruntuleme, irsaliye_no, departman, ozel_alan_1/2",
+    "v1.2.1 - Fatura detay sayfasinda goruntuleme sayaci",
+    "v1.2.0 - Musteri Portali (musteri-portal/)",
+    "v1.1.1 - Hotfix: musteri/index.php 500",
+    "v1.1.0 - Profesyonel tasarim + guncelleme sistemi"
   ]
 }

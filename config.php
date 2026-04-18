@@ -10,7 +10,7 @@
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'codega_entegrator_portal');
 define('DB_USER', 'codega_entegrator_portal');
-define('DB_PASS', '___DB_PASSWORD_HERE___');
+define('DB_PASS', 'CHANGE_ME_IN_PRODUCTION');
 define('DB_CHARSET', 'utf8mb4');
 
 // ── Site ────────────────────────────────────────────────────
@@ -42,7 +42,7 @@ define('ADMIN_DEFAULT_USER', 'admin');
 define('ADMIN_DEFAULT_PASS', 'admin123');   // ilk girişte zorunlu değiştirilir
 
 // ── Güvenlik ────────────────────────────────────────────
-define('CSRF_SECRET', '___RANDOM_32_CHAR_SECRET___');
+define('CSRF_SECRET', 'CHANGE_THIS_TO_RANDOM_32_CHAR_STRING');
 define('SESSION_NAME', 'codega_portal_session');
 define('SESSION_LIFETIME', 28800);  // 8 saat
 

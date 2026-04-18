@@ -140,6 +140,24 @@ $pdo->exec("CREATE TABLE IF NOT EXISTS ayarlar (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+// ═══ v1.2.1+ KOLON EKLENTİLERİ (EDM tarzı detaylı takip) ═════
+// Bu kolonlar faturalar tablosunda yoksa eklenir. Idempotent.
+try {
+    $pdo->exec("ALTER TABLE faturalar
+        ADD COLUMN IF NOT EXISTS mail_gonderim ENUM('beklemede','gonderildi','basarisiz','gonderilmedi') DEFAULT 'gonderilmedi' AFTER gib_yanit,
+        ADD COLUMN IF NOT EXISTS mail_gonderim_tarihi DATETIME DEFAULT NULL AFTER mail_gonderim,
+        ADD COLUMN IF NOT EXISTS portal_goruntuleme INT UNSIGNED DEFAULT 0 AFTER mail_gonderim_tarihi,
+        ADD COLUMN IF NOT EXISTS portal_son_goruntuleme DATETIME DEFAULT NULL AFTER portal_goruntuleme,
+        ADD COLUMN IF NOT EXISTS konnektor_durumu ENUM('yok','bekliyor','basarili','basarisiz') DEFAULT 'yok' AFTER portal_son_goruntuleme,
+        ADD COLUMN IF NOT EXISTS departman VARCHAR(100) DEFAULT NULL AFTER konnektor_durumu,
+        ADD COLUMN IF NOT EXISTS irsaliye_no VARCHAR(50) DEFAULT NULL AFTER departman,
+        ADD COLUMN IF NOT EXISTS ozel_alan_1 VARCHAR(255) DEFAULT NULL AFTER irsaliye_no,
+        ADD COLUMN IF NOT EXISTS ozel_alan_2 VARCHAR(255) DEFAULT NULL AFTER ozel_alan_1");
+} catch (\PDOException $e) {
+    // MariaDB < 10.0.2 / MySQL < 8.0.29 IF NOT EXISTS desteklemiyor — sessizce geç
+    // (zaten kurulu bir sistemde sorun yok, ilk kurulumda tablo yukarıda oluşuyor)
+}
+
 // ═══ MÜŞTERİ PORTALI TABLOLARI (v1.2.0+) ═════════════════
 
 $pdo->exec("CREATE TABLE IF NOT EXISTS musteri_portal_kullanicilar (

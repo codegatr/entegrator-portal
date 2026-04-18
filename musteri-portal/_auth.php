@@ -4,27 +4,26 @@
  * Admin portalından tamamen ayrı session + auth sistemi.
  *
  * Session name: codega_musteri_session (admin: codega_portal_session)
- * Böylece aynı tarayıcıda hem admin hem müşteri eş zamanlı oturum açabilir.
+ * Cookie path: / (SameSite, path çakışmasını engelleyen isim farkı zaten yeterli)
+ *
+ * ⚠️ ÖNEMLİ: Bu dosyayı include etmeden ÖNCE
+ *    define('CODEGA_NO_AUTO_SESSION', true);
+ * satırı ile config.php'nin otomatik session başlatmasını engellemek GEREKLİ.
  */
 
-// Bu dosya musteri-portal/* içinden include edilir.
-// config.php zaten çağıran sayfa tarafından include ediliyor olmalı.
-
 // ═══ AYRI SESSION ═══════════════════════════════════════════
-if (session_status() === PHP_SESSION_ACTIVE) {
-    // Ana portal session'ı zaten açılmış olabilir — onu kapatıp müşteri session'ı başlat
-    session_write_close();
-}
+// config.php CODEGA_NO_AUTO_SESSION flag'i ile otomatik session başlatmadı.
+// Artık kendi session'ımızı temiz bir şekilde başlatabiliriz.
 
-session_name('codega_musteri_session');
-session_set_cookie_params([
-    'lifetime' => SESSION_LIFETIME,
-    'path'     => '/musteri-portal/',   // cookie sadece bu path'te geçerli — admin ile çakışmaz
-    'secure'   => !empty($_SERVER['HTTPS']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https',
-    'httponly' => true,
-    'samesite' => 'Lax',
-]);
 if (session_status() === PHP_SESSION_NONE) {
+    session_name('codega_musteri_session');
+    session_set_cookie_params([
+        'lifetime' => SESSION_LIFETIME,
+        'path'     => '/',
+        'secure'   => !empty($_SERVER['HTTPS']) || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https',
+        'httponly' => true,
+        'samesite' => 'Lax',
+    ]);
     session_start();
 }
 

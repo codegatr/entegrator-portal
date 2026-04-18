@@ -1,4 +1,7 @@
 <?php
+// Müşteri portal: config.php otomatik session başlatmasın (ayrı session kullanıyoruz)
+define('CODEGA_NO_AUTO_SESSION', true);
+
 require __DIR__ . '/../config.php';
 require INCLUDES_PATH . '/init.php';
 require INCLUDES_PATH . '/helpers.php';
@@ -43,6 +46,12 @@ $log->execute([$id]);
 $log_kayitlari = $log->fetchAll();
 
 mp_audit($pdo, 'musteri.view_fatura', "fatura_id=$id no={$f['fatura_no']}");
+
+// Portal görüntüleme sayacı (EDM tarzı takip)
+try {
+    $pdo->prepare("UPDATE faturalar SET portal_goruntuleme = portal_goruntuleme + 1, portal_son_goruntuleme = NOW() WHERE id=?")
+        ->execute([$id]);
+} catch (\PDOException $e) { /* kolon henüz yoksa sessizce geç */ }
 
 $durum_badge = match($f['durum']) {
     'taslak'     => ['secondary', 'Taslak', 'clock'],
