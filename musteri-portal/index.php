@@ -211,6 +211,134 @@ mp_render_header('Ana Sayfa', 'dashboard');
     </div>
 </div>
 
+<?php if ($toplam === 0): ?>
+
+<!-- ═══ BOŞ DURUM - Müşteri henüz fatura almamış ═══ -->
+<div style="display:grid;grid-template-columns:2fr 1fr;gap:18px;margin-bottom:20px">
+    <!-- Sol: Büyük "ilk iş" motivasyon kartı -->
+    <div class="mp-card" style="background:linear-gradient(135deg,#eff6ff 0%,#fff 60%);border:1px solid #dbeafe">
+        <div style="padding:34px 32px;display:flex;gap:24px;align-items:center;flex-wrap:wrap">
+            <div style="flex:0 0 auto">
+                <div style="width:90px;height:90px;background:linear-gradient(135deg,#0b5cff 0%,#0a2540 100%);border-radius:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(11,92,255,0.25)">
+                    <svg width="46" height="46" viewBox="0 0 24 24" fill="#fff"><path d="M19 5v9l-5 5v-5H5V5h14m0-2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h9v-2.11l5-5V5c0-1.1-.9-2-2-2zm-8 12v-2h2v2h-2zm6-6h-2v2h-2V7h2V5h2v2h2v2h-2v2z"/></svg>
+                </div>
+            </div>
+            <div style="flex:1;min-width:240px">
+                <h2 style="margin:0 0 6px;font-size:22px;color:#0a2540;font-weight:700;letter-spacing:-0.3px">İlk faturanızı bekliyoruz</h2>
+                <p style="margin:0 0 14px;color:#475569;font-size:14px;line-height:1.6">
+                    Hoş geldiniz! Sizin adınıza düzenlenen ilk e-Fatura geldiğinde burada otomatik olarak görüntülenecek ve bildirim alacaksınız.
+                    CODEGA Entegratör sistemimiz sizin için hazır — firmanızdan bir satış yapıldığında fatura anında burada olacak.
+                </p>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <a href="<?= SITE_URL ?>/musteri-portal/ucretler.php" class="mp-btn mp-btn-primary mp-btn-sm">
+                        <?= mp_icon('star', 13) ?> Ücretlendirmeyi İncele
+                    </a>
+                    <a href="<?= SITE_URL ?>/musteri-portal/yardim.php" class="mp-btn mp-btn-ghost mp-btn-sm">
+                        <?= mp_icon('help', 13) ?> Nasıl Çalışır?
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sağ: Firma & hesap bilgisi mini kartı -->
+    <div class="mp-card">
+        <div class="mp-card-body" style="padding:22px">
+            <div style="font-size:10.5px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin-bottom:6px">FİRMA BİLGİSİ</div>
+            <div style="font-size:14.5px;font-weight:700;color:#0f172a;line-height:1.4;margin-bottom:10px"><?= h($user['unvan']) ?></div>
+
+            <div style="padding-top:12px;border-top:1px solid #f1f5f9;font-size:12px;color:#64748b;line-height:1.8">
+                <div style="display:flex;justify-content:space-between">
+                    <span>VKN:</span>
+                    <strong style="color:#0f172a;font-family:monospace"><?= h($user['vkn_tckn'] ?? '-') ?></strong>
+                </div>
+                <div style="display:flex;justify-content:space-between">
+                    <span>Kullanıcı:</span>
+                    <strong style="color:#0f172a"><?= h($user['ad_soyad'] ?: $user['user']) ?></strong>
+                </div>
+                <div style="display:flex;justify-content:space-between">
+                    <span>Durum:</span>
+                    <span style="background:#d1fae5;color:#065f46;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:700">● Aktif</span>
+                </div>
+            </div>
+
+            <a href="<?= SITE_URL ?>/musteri-portal/profil.php" style="display:block;margin-top:14px;padding:9px;text-align:center;border:1px solid #e2e8f0;border-radius:8px;text-decoration:none;color:#475569;font-size:12.5px;font-weight:600">
+                Profili Düzenle →
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Hızlı erişim kartları -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:20px">
+    <a href="<?= SITE_URL ?>/musteri-portal/faturalar.php" class="mp-card" style="text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 20px rgba(11,92,255,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px">
+            <div style="width:42px;height:42px;background:#eff6ff;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#0b5cff;margin-bottom:10px">
+                <?= mp_icon('invoice', 20) ?>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:3px">Faturalarım</div>
+            <div style="font-size:12px;color:#64748b">Gelen tüm faturalar</div>
+        </div>
+    </a>
+    <a href="<?= SITE_URL ?>/musteri-portal/arama.php" class="mp-card" style="text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 20px rgba(124,58,237,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px">
+            <div style="width:42px;height:42px;background:#ede9fe;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#7c3aed;margin-bottom:10px">
+                <?= mp_icon('search', 20) ?>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:3px">Gelişmiş Arama</div>
+            <div style="font-size:12px;color:#64748b">Fatura ve ürün arama</div>
+        </div>
+    </a>
+    <a href="<?= SITE_URL ?>/musteri-portal/destek.php" class="mp-card" style="text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 20px rgba(5,150,105,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px">
+            <div style="width:42px;height:42px;background:#d1fae5;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#059669;margin-bottom:10px">
+                <?= mp_icon('message', 20) ?>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:3px">Destek Talebi</div>
+            <div style="font-size:12px;color:#64748b">Sorunuzu yazın, yanıtlayalım</div>
+        </div>
+    </a>
+    <a href="<?= SITE_URL ?>/musteri-portal/ucretler.php" class="mp-card" style="text-decoration:none;color:inherit;transition:transform .2s,box-shadow .2s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 20px rgba(217,119,6,0.1)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="padding:20px">
+            <div style="width:42px;height:42px;background:#fef3c7;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#d97706;margin-bottom:10px">
+                <?= mp_icon('star', 20) ?>
+            </div>
+            <div style="font-size:14px;font-weight:700;color:#0f172a;margin-bottom:3px">Ücretlendirme</div>
+            <div style="font-size:12px;color:#64748b">Kontör paketleri ve hizmetler</div>
+        </div>
+    </a>
+</div>
+
+<!-- Sistem Durumu + İletişim alt alta kompakt -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
+    <div class="mp-card">
+        <div style="padding:18px 22px;display:flex;align-items:center;gap:14px">
+            <div style="width:42px;height:42px;background:#d1fae5;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#059669;flex-shrink:0">
+                <?= mp_icon('check-circle', 22) ?>
+            </div>
+            <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:700;color:#0f172a">Sistem çalışıyor</div>
+                <div style="font-size:12px;color:#64748b">7/24 e-fatura kabulüne hazır</div>
+            </div>
+            <span style="background:#d1fae5;color:#065f46;padding:3px 10px;border-radius:10px;font-size:11px;font-weight:700;flex-shrink:0">● AKTİF</span>
+        </div>
+    </div>
+    <div class="mp-card">
+        <div style="padding:18px 22px;display:flex;align-items:center;gap:14px">
+            <div style="width:42px;height:42px;background:#fee2e2;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#dc2626;flex-shrink:0">
+                <?= mp_icon('phone', 22) ?>
+            </div>
+            <div style="flex:1">
+                <div style="font-size:13.5px;font-weight:700;color:#0f172a">Destek hattı</div>
+                <div style="font-size:12px;color:#64748b">7/24 CODEGA Konya</div>
+            </div>
+            <a href="tel:+905320652400" style="background:#0a2540;color:#fff;padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:700;text-decoration:none;flex-shrink:0">0532 065 24 00</a>
+        </div>
+    </div>
+</div>
+
+<?php else: ?>
+
 <!-- ═══ KPI GRID ═══ -->
 <div class="mp-kpi-grid">
     <div class="mp-kpi">
@@ -650,5 +778,7 @@ mp_render_header('Ana Sayfa', 'dashboard');
         </div>
     </div>
 </div>
+
+<?php endif; /* toplam > 0 */ ?>
 
 <?php mp_render_footer(); ?>
