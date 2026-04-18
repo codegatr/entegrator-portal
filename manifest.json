@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,10 +13,11 @@
     ".htaccess"
   ],
   "changelog": [
-    "v1.5.1 - Musteri dashboard bos durum tasarimi yenilendi",
-    "v1.5.1 - Fatura yoksa: motivasyonel 'ilk is' karti + 4 hizli erisim + sistem durumu",
-    "v1.5.1 - Bos KPI kartlari ve bos trend grafigi gizlendi",
-    "v1.5.0 - Ucretler + Yol Haritasi + 500 fix",
-    "v1.4.0 - Destek Talep + Gelismis arama"
+    "v1.5.2 - Nav menu: 'Ana Sayfa' tek satirda sigsin (white-space nowrap)",
+    "v1.5.2 - Destek/Arama sayfalari fail-safe: 500 beyaz ekran yerine anlamli hata sayfasi",
+    "v1.5.2 - Debug modu: URL'ye ?debug=1 eklenince hata detayi gosterilir",
+    "v1.5.2 - CODEGA destek iletisim bilgisi her hata sayfasinda otomatik",
+    "v1.5.1 - Dashboard bos durum tasarimi",
+    "v1.5.0 - Ucretler + Yol Haritasi"
   ]
 }

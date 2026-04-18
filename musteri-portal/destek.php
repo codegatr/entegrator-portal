@@ -1,6 +1,14 @@
 <?php
 define('CODEGA_NO_AUTO_SESSION', true);
 
+// ═══ FAIL-SAFE: Her türlü hatayı yakala ve sayfa olarak göster ═══
+set_error_handler(function($severity, $message, $file, $line) {
+    if (!(error_reporting() & $severity)) return false;
+    throw new \ErrorException($message, 0, $severity, $file, $line);
+});
+
+try {
+
 require __DIR__ . '/../config.php';
 require INCLUDES_PATH . '/init.php';
 require INCLUDES_PATH . '/helpers.php';
@@ -363,3 +371,87 @@ mp_render_header('Destek Talepleri', 'destek');
 </style>
 
 <?php mp_render_footer(); ?>
+
+<?php
+} catch (\Throwable $e) {
+    // ═══ 500 hatasını anlamlı sayfaya çevir ═══
+    while (ob_get_level() > 0) { @ob_end_clean(); }
+    http_response_code(500);
+
+    $debug_mode = (isset($_GET['debug']) && $_GET['debug'] === '1')
+        || (isset($user) && is_array($user) && ($user['id'] ?? 0) > 0);
+
+    ?>
+    <!DOCTYPE html>
+    <html lang="tr">
+    <head>
+        <meta charset="UTF-8">
+        <title>Destek - Hata Oluştu</title>
+        <style>
+            body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; background: #f8fafc; padding: 40px 20px; margin: 0; color: #0f172a }
+            .box { max-width: 720px; margin: 0 auto; background: #fff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 32px; box-shadow: 0 4px 12px rgba(0,0,0,.04) }
+            h1 { color: #dc2626; font-size: 22px; margin: 0 0 10px }
+            .msg { background: #fef3c7; border-left: 4px solid #d97706; padding: 14px 18px; border-radius: 8px; margin: 16px 0; font-size: 14px; line-height: 1.6 }
+            .trace { background: #0f172a; color: #a7f3d0; font-family: monospace; font-size: 12px; padding: 18px; border-radius: 10px; overflow: auto; max-height: 320px; white-space: pre-wrap; word-break: break-all }
+            .hint { background: #eff6ff; padding: 14px 18px; border-radius: 8px; color: #1e40af; font-size: 13.5px; line-height: 1.6; margin-top: 14px }
+            a { color: #0b5cff; text-decoration: none; font-weight: 600 }
+            .btn { display: inline-block; background: #0b5cff; color: #fff; padding: 9px 18px; border-radius: 8px; font-weight: 600; font-size: 13.5px; margin-top: 16px; text-decoration:none }
+        </style>
+    </head>
+    <body>
+        <div class="box">
+            <h1>⚠️ Destek sayfasında hata oluştu</h1>
+            <div class="msg">
+                Teknik bir sorun tespit edildi. Bu hata mesajını CODEGA destek ekibiyle paylaşırsanız hızla çözülür.
+            </div>
+
+            <?php if ($debug_mode): ?>
+                <div style="margin:20px 0">
+                    <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:6px">HATA DETAYI</div>
+                    <div style="background:#fee2e2;color:#7f1d1d;padding:14px 18px;border-radius:8px;font-size:13.5px;font-family:monospace;word-break:break-all">
+                        <?= htmlspecialchars($e->getMessage()) ?>
+                    </div>
+                </div>
+
+                <div style="margin:16px 0">
+                    <div style="font-size:11px;color:#94a3b8;text-transform:uppercase;letter-spacing:0.5px;font-weight:700;margin-bottom:6px">DOSYA</div>
+                    <div style="font-family:monospace;font-size:12px;color:#475569">
+                        <?= htmlspecialchars($e->getFile()) ?>:<strong style="color:#dc2626"><?= $e->getLine() ?></strong>
+                    </div>
+                </div>
+
+                <details style="margin:16px 0">
+                    <summary style="cursor:pointer;font-weight:600;color:#475569;font-size:13px">▸ Stack Trace (geliştirici için)</summary>
+                    <div class="trace"><?= htmlspecialchars($e->getTraceAsString()) ?></div>
+                </details>
+            <?php else: ?>
+                <div class="hint">
+                    <strong>Geliştirici modunda detay için:</strong> URL'nin sonuna <code>?debug=1</code> ekleyip yeniden yükleyin.
+                </div>
+            <?php endif; ?>
+
+            <div class="hint">
+                <strong>📞 CODEGA Destek:</strong>
+                <a href="tel:+905320652400">0532 065 24 00</a> ·
+                <a href="https://wa.me/905320652400" target="_blank">WhatsApp</a> ·
+                <a href="mailto:info@codega.com.tr">info@codega.com.tr</a>
+            </div>
+
+            <a href="<?= htmlspecialchars($_SERVER['HTTP_REFERER'] ?? '/musteri-portal/index.php') ?>" class="btn">← Ana Sayfaya Dön</a>
+        </div>
+
+        <?php
+        // Hatayı her zaman error_log'a yaz
+        error_log(sprintf(
+            '[destek.php 500] %s at %s:%d',
+            $e->getMessage(),
+            $e->getFile(),
+            $e->getLine()
+        ));
+        ?>
+    </body>
+    </html>
+    <?php
+}
+restore_error_handler();
+?>
