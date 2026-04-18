@@ -1,6 +1,6 @@
 # Kurulum Yönergeleri
 
-CODEGA e-Fatura Portal'ın DirectAdmin shared hosting'e kurulumu. Diğer ortamlar için aynı mantık geçerli, sadece panel adımları değişir.
+CODEGA Entegratör Portal'ın DirectAdmin shared hosting'e kurulumu. Diğer ortamlar için aynı mantık geçerli, sadece panel adımları değişir.
 
 ## Gereksinimler
 
@@ -18,13 +18,13 @@ CODEGA e-Fatura Portal'ın DirectAdmin shared hosting'e kurulumu. Diğer ortamla
 **DirectAdmin panelinde:**
 
 1. `Subdomain Management` → `Create new subdomain`
-2. Subdomain adı: `efatura` (veya seçtiğin başka isim)
+2. Subdomain adı: `entegrator` (veya seçtiğin başka isim)
 3. Domain: `codega.com.tr`
-4. Tam adres: `efatura.codega.com.tr`
+4. Tam adres: `entegrator.codega.com.tr`
 
 DirectAdmin otomatik şu dizini oluşturur:
 ```
-/home/codega/domains/codega.com.tr/public_html/efatura/
+/home/codega/domains/codega.com.tr/public_html/entegrator/
 ```
 
 ## Adım 2 — Veritabanı Oluştur
@@ -46,28 +46,28 @@ SSH ile bağlan:
 ```bash
 ssh codega@codega.com.tr
 cd /home/codega/domains/codega.com.tr/public_html/
-rm -rf efatura   # DirectAdmin'in oluşturduğu boş klasörü sil
-git clone https://github.com/codegatr/entegrator-portal.git efatura
-cd efatura
+rm -rf entegrator   # DirectAdmin'in oluşturduğu boş klasörü sil
+git clone https://github.com/codegatr/entegrator-portal.git entegrator
+cd entegrator
 ```
 
 Sonra **DirectAdmin'de subdomain document root'unu değiştir:**
 
-- `Subdomain Management` → `efatura.codega.com.tr` → `Edit`
-- Document Root: `/public_html/efatura/public/` (sonundaki `/public/` kritik!)
+- `Subdomain Management` → `entegrator.codega.com.tr` → `Edit`
+- Document Root: `/public_html/entegrator/public/` (sonundaki `/public/` kritik!)
 
 > ⚠️ Document root **mutlaka `/public` altındaki** `public/` klasörünü göstermeli. Aksi halde `config.php`, `includes/`, `libs/`, `storage/` dizinleri web'den erişilebilir olur. **Güvenlik açığı!**
 
 ### Seçenek B: ZIP ile
 
 1. Release'ten ZIP indir: `https://github.com/codegatr/entegrator-portal/releases/latest`
-2. FTP/File Manager ile `efatura/` klasörüne aç
-3. Subdomain document root'unu `/efatura/public/` yap (yukarıdaki gibi)
+2. FTP/File Manager ile `entegrator/` klasörüne aç
+3. Subdomain document root'unu `/entegrator/public/` yap (yukarıdaki gibi)
 
 ## Adım 4 — config.php Hazırla
 
 ```bash
-cd /home/codega/domains/codega.com.tr/public_html/efatura/
+cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 cp config.example.php config.php
 nano config.php
 ```
@@ -81,7 +81,7 @@ define('DB_USER', 'codega_entegrator_portal');     // Adım 2'de oluşturdun
 define('DB_PASS', 'BuRaYaGüçlüŞifre');             // Adım 2'de not aldığın
 
 // ── Site ──
-define('SITE_URL', 'https://efatura.codega.com.tr');
+define('SITE_URL', 'https://entegrator.codega.com.tr');
 
 // ── Firma (CODEGA kendi bilgileri — DOĞRU VKN İLE GÜNCELLE!) ──
 define('FIRMA_VKN',          '1234567890');        // ⚠️ GERÇEK VKN
@@ -106,7 +106,7 @@ php -r "echo bin2hex(random_bytes(16)) . PHP_EOL;"
 ## Adım 5 — Dizin İzinleri
 
 ```bash
-cd /home/codega/domains/codega.com.tr/public_html/efatura/
+cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 
 # storage/ dizini web server için yazılabilir olmalı
 chmod 755 storage
@@ -132,7 +132,7 @@ php -m | grep -iE "pdo_mysql|openssl|dom|mbstring|json|curl"
 
 ## Adım 7 — İlk Açılış
 
-Tarayıcıda aç: `https://efatura.codega.com.tr/`
+Tarayıcıda aç: `https://entegrator.codega.com.tr/`
 
 **Doğru çalışıyorsa görmen gereken:**
 
@@ -140,7 +140,7 @@ Tarayıcıda aç: `https://efatura.codega.com.tr/`
 ┌─────────────────────────────────┐
 │   ┌─┐                           │
 │   │📄│  Portal Girişi           │
-│   └─┘  CODEGA e-Fatura Portal   │
+│   └─┘  CODEGA Entegratör Portal   │
 │                                 │
 │   [Kullanıcı adı]               │
 │   [Şifre]                       │
@@ -157,10 +157,10 @@ Tarayıcıda aç: `https://efatura.codega.com.tr/`
 ## Adım 8 — Kurulum Sonrası Kontrol Listesi
 
 ```
-☐ https://efatura.codega.com.tr açılıyor ve login ekranı geliyor
-☐ https://efatura.codega.com.tr/config.php → 403 veya login (ERİŞİLMEMELİ)
-☐ https://efatura.codega.com.tr/storage/ → 403 (ERİŞİLMEMELİ)
-☐ https://efatura.codega.com.tr/includes/ → 403 (ERİŞİLMEMELİ)
+☐ https://entegrator.codega.com.tr açılıyor ve login ekranı geliyor
+☐ https://entegrator.codega.com.tr/config.php → 403 veya login (ERİŞİLMEMELİ)
+☐ https://entegrator.codega.com.tr/storage/ → 403 (ERİŞİLMEMELİ)
+☐ https://entegrator.codega.com.tr/includes/ → 403 (ERİŞİLMEMELİ)
 ☐ admin girişi başarılı
 ☐ Zorunlu şifre değiştirme çalıştı
 ☐ Dashboard geldi — 7 tablo otomatik oluşturulmuş olmalı
@@ -180,7 +180,7 @@ SSH'den kurulumu hızla kontrol etmek için:
 
 ```bash
 php -r "
-require '/home/codega/domains/codega.com.tr/public_html/efatura/config.php';
+require '/home/codega/domains/codega.com.tr/public_html/entegrator/config.php';
 \$tables = \$pdo->query(\"SHOW TABLES\")->fetchAll(PDO::FETCH_COLUMN);
 echo 'Tablo sayısı: ' . count(\$tables) . \"\n\";
 echo 'Tablolar: ' . implode(', ', \$tables) . \"\n\";
@@ -200,7 +200,7 @@ Admin var mı: Evet
 ### Git kullanıyorsan
 
 ```bash
-cd /home/codega/domains/codega.com.tr/public_html/efatura/
+cd /home/codega/domains/codega.com.tr/public_html/entegrator/
 git pull
 # config.php zaten .gitignore'da — dokunulmaz
 ```
@@ -221,13 +221,13 @@ git pull
 
 ```bash
 # Haftalık otomatik yedek için cron (DirectAdmin > Cron Jobs)
-0 3 * * 0 mysqldump -u codega_entegrator_portal -p'SIFRE' codega_entegrator_portal | gzip > /home/codega/domains/codega.com.tr/public_html/efatura/storage/backups/db_$(date +\%Y\%m\%d).sql.gz
+0 3 * * 0 mysqldump -u codega_entegrator_portal -p'SIFRE' codega_entegrator_portal | gzip > /home/codega/domains/codega.com.tr/public_html/entegrator/storage/backups/db_$(date +\%Y\%m\%d).sql.gz
 ```
 
 XML dosyaları için rsync:
 ```bash
 # Aylık yedek (1. gün 04:00)
-0 4 1 * * rsync -a /home/codega/domains/codega.com.tr/public_html/efatura/storage/xml/ /home/codega/backups/efatura_xml/
+0 4 1 * * rsync -a /home/codega/domains/codega.com.tr/public_html/entegrator/storage/xml/ /home/codega/backups/entegrator_xml/
 ```
 
 ## Sorun Giderme
