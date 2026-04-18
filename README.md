@@ -1,4 +1,4 @@
-# CODEGA e-Fatura Portal
+# CODEGA Entegratör Portal
 
 **Web arayüzlü e-Fatura oluşturma + yönetim portalı.** PHP 8.3 + MySQL + [entegrator-gib](https://github.com/codegatr/entegrator-gib) kütüphanesi tabanlı.
 
@@ -29,7 +29,7 @@
 
 Detaylı kurulum için [KURULUM.md](KURULUM.md) dosyasına bakın. Özetle:
 
-1. DirectAdmin'de subdomain oluştur (`efatura.codega.com.tr`)
+1. DirectAdmin'de subdomain oluştur (`entegrator.codega.com.tr`)
 2. Subdomain'in **document root'unu** `public/` klasörüne yönlendir
 3. MySQL database + user oluştur
 4. ZIP'i sunucuya aç, `config.example.php`'yi `config.php` olarak kopyala ve düzenle
