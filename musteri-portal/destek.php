@@ -134,10 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['action'] ?? '') === 'creat
 
 // Filtre
 $durum_filtre = $_GET['durum'] ?? '';
-$where = 'mukellef_id=?';
+$where = 'dt.mukellef_id=?';
 $par = [$mid];
 if (in_array($durum_filtre, ['acik','cevaplandi','beklemede','kapali'], true)) {
-    $where .= ' AND durum=?';
+    $where .= ' AND dt.durum=?';
     $par[] = $durum_filtre;
 }
 
