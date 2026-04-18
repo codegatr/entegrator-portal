@@ -41,7 +41,7 @@ a:hover{color:#0847c5}
 .mp-logo-sub{font-size:10.5px;color:var(--mp-text-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:500}
 
 .mp-nav{display:flex;gap:4px;flex:1;margin-left:20px}
-.mp-nav a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;color:var(--mp-text-soft);font-size:13.5px;font-weight:600;border-radius:8px;transition:all .12s;white-space:nowrap}
+.mp-nav a{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;color:var(--mp-text-soft);font-size:13.5px;font-weight:600;border-radius:8px;transition:all .12s;white-space:nowrap;flex-shrink:0}
 .mp-nav a:hover{background:var(--mp-border-light);color:var(--mp-text);text-decoration:none}
 .mp-nav a.active{background:var(--mp-brand);color:#fff}
 .mp-nav a.active:hover{color:#fff}

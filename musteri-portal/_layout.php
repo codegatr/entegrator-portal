@@ -59,7 +59,7 @@ function mp_render_header(string $title = '', string $active = ''): void
     $full_title = $title ? ($title . ' · Müşteri Portalı') : 'Müşteri Portalı';
 
     $menu = [
-        ['dashboard', 'Ana Sayfa',    'home',     '/musteri-portal/index.php'],
+        ['dashboard', 'Anasayfa',     'home',     '/musteri-portal/index.php'],
         ['faturalar', 'Faturalarım',  'invoice',  '/musteri-portal/faturalar.php'],
         ['arama',     'Arama',        'search',   '/musteri-portal/arama.php'],
         ['destek',    'Destek',       'message',  '/musteri-portal/destek.php'],
@@ -73,7 +73,7 @@ function mp_render_header(string $title = '', string $active = ''): void
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= htmlspecialchars($full_title) ?></title>
-<link rel="stylesheet" href="<?= SITE_URL ?>/musteri-portal/assets/mp-style.css?v=1.0">
+<link rel="stylesheet" href="<?= SITE_URL ?>/musteri-portal/assets/mp-style.css?v=1.5.4">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">

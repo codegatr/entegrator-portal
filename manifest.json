@@ -1,6 +1,6 @@
 {
   "name": "CODEGA Entegratör Portal",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "release_date": "2026-04-18",
   "author": "CODEGA",
   "website": "https://codega.com.tr",
@@ -13,11 +13,10 @@
     ".htaccess"
   ],
   "changelog": [
-    "v1.5.3 - 500 HATASI COZULDU: destek.php ambiguous column fix",
-    "v1.5.3 - destek.php satir 137: 'mukellef_id=?' -> 'dt.mukellef_id=?'",
-    "v1.5.3 - destek.php satir 140: 'durum=?' -> 'dt.durum=?'",
-    "v1.5.2 - Nav menu white-space + fail-safe hata yakalama",
-    "v1.5.1 - Dashboard bos durum tasarimi",
-    "v1.5.0 - Ucretler + Yol Haritasi"
+    "v1.5.4 - 'Ana Sayfa' -> 'Anasayfa' (tek kelime, 2 satira taşmaz)",
+    "v1.5.4 - CSS: flex-shrink:0 ile dar ekranda kirilma onlendi",
+    "v1.5.4 - CSS cache-buster: v=1.5.4 (tarayicilar yeni stili cekecek)",
+    "v1.5.3 - Destek 500 ambiguous column COZULDU",
+    "v1.5.2 - Nav white-space + fail-safe"
   ]
 }
